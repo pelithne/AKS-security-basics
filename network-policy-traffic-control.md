@@ -1,7 +1,7 @@
 ### Network policies
-Your AKS cluster wss deployed with Azure network policies enabled. The Network policies can be used to control traffic between resources in Kubernetes.
+Your AKS cluster was deployed with Azure network policies enabled. The Network policies can be used to control traffic between resources in Kubernetes.
 
-In this section you will create to workloads that initially will be allowed to communicate. After that you will restrict communication between pods.
+In this section you will create two workloads in their own namespaces that initially will be allowed to communicate. After that you will restrict communication between pods.
 
 First create a namespace called nginx and an nginx web server
 
@@ -23,7 +23,7 @@ Now, *exec* into the busybox container and issue a HTTP GET request towrds its I
 
 ````
 kubectl exec -ti busybox -- bash
-curl <nginx IP address>
+curl http://<nginx IP address>
 ````
 
 And you should get a response similar to this
@@ -72,7 +72,7 @@ EOF
 If you repeat the curl command form inside the busybox pod, you should find that the request now times out
 ````
 kubectl exec -ti busybox -- bash
-curl <nginx IP address>
+curl http://<nginx IP address>
 
 ````
 
@@ -106,7 +106,7 @@ This time traffic should be allowed when you repeat the curl request from the bu
 
 ````
 kubectl exec -ti busybox -- bash
-curl <nginx IP address>
+curl http://<nginx IP address>
 
 HTTP/1.1 200 OK
 Server: nginx/1.19.10
