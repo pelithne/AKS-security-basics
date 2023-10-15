@@ -100,10 +100,10 @@ Create an AKS cluster using ````az aks create```` command:
 az aks create --resource-group security-workshop --name k8s --node-count 2 --node-vm-size Standard_D2s_v4 --no-ssh-key  --network-plugin azure --network-policy azure
 ```
 
-### NOTE: the ````network-plugin```` and ````--network-policy```` settings are needed for a later exercise
+#### NOTE: the ````network-plugin```` and ````--network-policy```` settings are needed for a later exercise
 
 
-The creation time for the cluster should be around 5 minutes.
+The creation time for the cluster should be around 4-5 minutes.
 
 ### 3.4.2. Get access to the AKS Cluster
 
@@ -132,13 +132,6 @@ In this section, you will learn how to:
 - Create User in AAD
 
 
-First create the security group in Azure AD for **Cluster Admin**
-
-````bash
-az ad group create --display-name admin --mail-nickname admin
-````
-
-
 ### Integrate AKS with Microsoft Entra ID
 
 Update the existing AKS cluster to support Microsoft Entra ID integration, and configure a cluster admin group, and disable local admin accounts in AKS, as this will prevent anyone from using the **--admin** switch to get the cluster credentials.
@@ -147,7 +140,16 @@ Update the existing AKS cluster to support Microsoft Entra ID integration, and c
 az aks update -g security-workshop -n k8s --enable-azure-rbac --enable-aad --disable-local-accounts
 ````
 
+At this point, if you try to communicate with the Kubernetes API it will not be permitted. For instance you can try
 
+###TODO: validate access restriction in a good way.
+
+
+Then create the security group in Azure AD for **Cluster Admin**
+
+````bash
+az ad group create --display-name admin --mail-nickname admin
+````
 
 Then grant the **Admin** group users the permissions to connect to and manage all aspects of the AKS cluster. For this you need the reource ID of your cluster and the object ID of your management group. For convenience you can put it in environment variables:
 
