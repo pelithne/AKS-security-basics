@@ -67,48 +67,18 @@ For instance, you may want to have a look in the ````application/azure-vote-app`
 
 ## 3.3. Create Resource Group
 
+In all the commands in this section, we will use the name space name ````security-workshop````. If you choose a different name, just make sure to modify the commands accordingly
+
 All resources in Azure exists in a *Resource Group*. The resource group is a "placeholder" for all the resources you create. 
 
 All the resources you create in this workshop will use the same Resource Group. Use the commnd below to create the resource group.
 
 ````bash
-az group create -n <resource-group-name> -l westeurope
+az group create -n security-workshop -l swedencentral
 ````
 
-## 3.4. Create an Azure Container Registry (ACR)
 
-You will use a private Azure Container Registry to *build* and *store* the docker images that you will deploy to Kubernetes. The name of the the ACR needs to be globally unique, and should consist of only lower case letters. You could for instance use your corporate signum.
-
-The reason it needs to be unique, is that your ACR will get a Fully Qualified Domain Name (FQDN), on the form ````<Your unique ACR name>.azurecr.io````
-
-The command below will create the container registry and place it in the Resource Group you created previously.
-
-````bash
-az acr create --name <your unique ACR name> --resource-group <resource-group-name> --sku basic
-````
-
-## 3.5. Build images using ACR
-
-Docker images can be built in a number of different ways, for instance by using the docker CLI. Another (and sometimes easier) way is to use *Azure Container Registry Tasks*, which is the approach we will use in this workshop.
-
-The docker image is built using a so called *Dockerfile*. The Dockerfile contains instructions for how to build the image. Feel free to have a look at the Dockerfile in the repository (once again using *code*):
-
-````bash
-code application/azure-vote-app/Dockerfile
-````
-
-As you can see, this very basic Dockerfile will use a *base image* from ````tiangolo/uwsgi-nginx-flask:python3.6-alpine3.8````.
-
-On top of that base image, it will install [redis-py](https://pypi.org/project/redis/) and then take the contents of the directory ````./azure-vote```` and copy it into the container in the path ````/app````.
-
-To build the docker container image, cd into the right directory, and use the ````az acr build```` command:
-
-````bash
-cd application/azure-vote-app
-az acr build --image azure-vote-front:v1 --registry <your unique ACR name> --file Dockerfile .
-````
-
-## 3.6. Azure Kubernetes Service (AKS)
+## 3.4. Azure Kubernetes Service (AKS)
 
 AKS is the hosted Kubernetes service on Azure.
 
@@ -119,24 +89,28 @@ Kubernetes provides a distributed platform for containerized applications. You b
 * Update Kubernetes manifest files
 * Run an application in Kubernetes
 
-### 3.6.1. Create AKS Cluster
+### 3.4.1. Create AKS Cluster
 
-Create an AKS cluster using ````az aks create````. Give the cluster a name, e.g.  ````k8s````, and run the command:
+In all the commands in this section, we will use the name space name ````k8s````. If you choose a different name, just make sure to modify the commands accordingly
+
+
+Create an AKS cluster using ````az aks create```` command:
 
 ```azurecli
-az aks create --resource-group <resource-group-name> --name k8s --node-count 2 --node-vm-size Standard_D2s_v4 --no-ssh-key --attach-acr <your unique ACR name>
+az aks create --resource-group security-workshop --name k8s --node-count 2 --node-vm-size Standard_D2s_v4 --no-ssh-key  --network-plugin azure --network-policy azure
 ```
 
-### note: in the command above, we attach the ACR created previously. This is to allow the AKS cluster to download images from the container registry. Behind the scenes, this is using Azure Managed Identity.
+### NOTE: the ````network-plugin```` and ````--network-policy```` settings are needed for a later exercise
+
 
 The creation time for the cluster should be around 5 minutes.
 
-### 3.6.2. Get access to the AKS Cluster
+### 3.4.2. Get access to the AKS Cluster
 
 In order to use `kubectl` you need to connect to the Kubernetes cluster, using the following command (which assumes that you named the cluster k8s):
 
 ```azurecli
-az aks get-credentials --resource-group <resource-group-name> --name k8s
+az aks get-credentials --resource-group security-workshop --name k8s
 ```
 
 To verify that your cluster is up and running you can try a kubectl command, like ````kubectl get nodes```` which  will show you the nodes (virtual machines) that are active in your cluster. If you followed the instructions, you should see two nodes.
@@ -146,7 +120,7 @@ kubectl get nodes
 ````
 
 
-### Secure cluster acces with Microsoft Entra ID (Azure Active Directory)
+### Secure cluster access with Microsoft Entra ID (Azure Active Directory)
 
 Azure Kubernetes Service (AKS) supports Azure Active Directory (AAD) integration, which allows you to control access to your cluster resources using Azure role-based access control (RBAC). 
 
@@ -158,12 +132,10 @@ In this section, you will learn how to:
 - Create User in AAD
 
 
-
-
 First create the security group in Azure AD for **Cluster Admin**
 
 ````bash
-az ad group create --display-name <Group Name> --mail-nickname <Group Name>
+az ad group create --display-name admin --mail-nickname admin
 ````
 
 
@@ -172,15 +144,21 @@ az ad group create --display-name <Group Name> --mail-nickname <Group Name>
 Update the existing AKS cluster to support Microsoft Entra ID integration, and configure a cluster admin group, and disable local admin accounts in AKS, as this will prevent anyone from using the **--admin** switch to get the cluster credentials.
 
 ````bash
-az aks update -g <Resource group> -n <AKS Cluster Name> --enable-azure-rbac --enable-aad --disable-local-accounts
+az aks update -g security-workshop -n k8s --enable-azure-rbac --enable-aad --disable-local-accounts
 ````
 
 
 
-Then grant the **Admin** group users the permissions to connect to and manage all aspects of the AKS cluster.
+Then grant the **Admin** group users the permissions to connect to and manage all aspects of the AKS cluster. For this you need the reource ID of your cluster and the object ID of your management group. For convenience you can put it in environment variables:
 
 ````bash
-az role assignment create --assignee $admin_group_object_id --role "Azure Kubernetes Service RBAC Cluster Admin" --scope ${AKS_RESOURCE_ID}
+AKS_RESOURCE_ID=$(az aks show -g security-workshop -n k8s --query 'id' --output tsv)
+ADMIN_GROUP_ID=$(az ad group show --group admin --query 'id' --output tsv)
+````
+
+
+````bash
+az role assignment create --assignee $ADMIN_GROUP_ID --role "Azure Kubernetes Service RBAC Cluster Admin" --scope $AKS_RESOURCE_ID
  ````
 
 
@@ -188,27 +166,27 @@ az role assignment create --assignee $admin_group_object_id --role "Azure Kubern
 Create the Admin user:
 
 ````bash
-az ad user create --display-name <Admin role display name>  --user-principal-name <user principal name> --password <admin password>
+az ad user create --display-name admin  --user-principal-name <user-principal-name> --password Something_secure123
 ````
 
 Assign the admin user to admin group for the AKS cluster.
 
-First identify the object id of the user as we will need this number to assign the user to the admin group.
+First get the object id of the user as we will need this number to assign the user to the admin group. For convenience, you can put it in an environment variable
 
 ````bash
-admin_user_object_id=$(az ad user show --id <user principal name> --query 'id' --output tsv)
+ADMIN_USER_ID=$(az ad user show --id <user-principal-name> --query 'id' --output tsv)
 ````
 
 Assign the user to the admin security group.
 
 ````bash
-az ad group member add --group <Admin group name> --member-id $admin_user_object_id
+az ad group member add --group admin --member-id $ADMIN_USER_ID
 ````
 
 ### Validate the access to the cluster.
 
 ````
-az aks get-creadentials -g <Resource Group> -n <AKS Cluster Name>
+az aks get-creadentials -g security-workshop -n k8s
 ````
 
 This will trigger a login procedure after which you should be able to interact with the Kubernetes API 
