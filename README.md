@@ -2,7 +2,7 @@
 
 This repository contains instructions for a workshop about Kubernetes security.
 
-There are 5 hands one exercices that that you will go through during the workshop.
+There are 5 hands-on exercices that that you will go through during the workshop.
 
 1: <a href="https://github.com/pelithne/aks-security-basics/blob/main/identity-and-access-mgmt.md">Identity and Access management</a>
 
