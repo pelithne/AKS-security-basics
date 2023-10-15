@@ -78,7 +78,7 @@ curl http://<nginx IP address>
 
 It times out because we have restricted all communication to the nginx namespace.
 
-Now apply a new policy that allows traffic into the nginx pod from pods that have the label ````app: busybox```` which are located in the namespace busybox.
+Now apply a new policy that allows traffic into the nginx pod from pods that have the label ````app: busybox```` which are located in the namespace ````busybox``````.
 
 ````
 cat <<EOF | kubectl apply -f -
