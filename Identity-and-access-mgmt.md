@@ -39,33 +39,7 @@ az account set --subscription <subscription-id>
 
 # 3. Initial Setup
 
-## 3.1. Get the code
-
-The code for this workshop is located in the same repository that you are looking at now. To *clone* the repository to your cloud shell, do this:
-
-```bash
-git clone https://github.com/pelithne/k8s-short.git
-```
-
-Then cd into the repository directory:
-
-````bash
-cd k8s-short
-````
-
-## 3.2. View the code
-
-Azure Cloud Shell has a built in code editor, which is based on the popular VS Code editor. To view/edit all the files in the repository, run code like this:
-
-````bash
-code .
-````
-
-You can navigate the files in the repo in the left hand menu, and edit the files in the right hand window. Use the *right mouse button* to access the various commands (e.g. ````Save```` and ````Quit```` etc).
-
-For instance, you may want to have a look in the ````application/azure-vote-app```` directory. This is where the code for the application is located. Here you can also find the *Dockerfile* which will be used to build your docker image, in a later step.
-
-## 3.3. Create Resource Group
+## 3.1. Create Resource Group
 
 In all the commands in this section, we will use the name space name ````security-workshop````. If you choose a different name, just make sure to modify the commands accordingly
 
@@ -78,7 +52,7 @@ az group create -n security-workshop -l swedencentral
 ````
 
 
-## 3.4. Azure Kubernetes Service (AKS)
+## 3.2. Azure Kubernetes Service (AKS)
 
 AKS is the hosted Kubernetes service on Azure.
 
@@ -89,7 +63,7 @@ Kubernetes provides a distributed platform for containerized applications. You b
 * Update Kubernetes manifest files
 * Run an application in Kubernetes
 
-### 3.4.1. Create AKS Cluster
+### 3.2.1. Create AKS Cluster
 
 In all the commands in this section, we will use the name space name ````k8s````. If you choose a different name, just make sure to modify the commands accordingly
 
@@ -105,7 +79,7 @@ az aks create --resource-group security-workshop --name k8s --node-count 2 --nod
 
 The creation time for the cluster should be around 4-5 minutes.
 
-### 3.4.2. Get access to the AKS Cluster
+### 3.2.2. Get access to the AKS Cluster
 
 In order to use `kubectl` you need to connect to the Kubernetes cluster, using the following command (which assumes that you named the cluster k8s):
 
