@@ -1,4 +1,4 @@
-# 1. AKS Security Basics
+# 1. Identity and Access Management
 
 This section focuses on setting up the base infrastructure, and to secure your Kubernetes cluster using Microsoft Entra ID (Azure Active Directory).
 
