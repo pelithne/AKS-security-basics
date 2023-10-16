@@ -1,11 +1,12 @@
-## Deploy app with Workload Identity
+# Workload Identity
 
 During this activity you will:
 
-* Create an Azure Container Registry
-* Activate OIDC issuer on AKS cluster (or create a new cluster with OIDC activated)
+* Create an Azure Container Registry (ACR)
+* Activate OIDC issuer on AKS cluster, and attach ACR
 * Create an Azure Key Vault and secret.
-* Create an Azure Active Directory (Azure AD) managed identity
+* Create a Microsoft Entra (Azure AD) managed identity
+* Create a Kubernetes service account
 * Connect the MI to a Kubernetes service account with token federation
 * Deploy a workload and verify authentication to keyvault with the workload identity
 
@@ -16,7 +17,7 @@ Pro-tip: Save them into a file, so that you can restore them if cloudshell times
 
 ````
 export RESOURCE_GROUP="security-basics"
-export LOCATION="westeurope"
+export LOCATION="swedencentral"
 export FRONTEND_NAMESPACE="frontend"
 export BACKEND_NAMESPACE="backend"
 export SERVICE_ACCOUNT_NAME="workload-identity-sa"
@@ -31,7 +32,7 @@ export ACRNAME=<your globally unique container registry name>
 
 
 
-### Create Container Registry
+## Create Container Registry
 
 You will build an application that you will store in ACR. To create it, run this command:
 
@@ -39,7 +40,7 @@ You will build an application that you will store in ACR. To create it, run this
  az acr create --resource-group $RESOURCE_GROUP --name $ACRNAME 
 ````
 
-### Update AKS cluster with OIDC issuer and container registry attachment
+## Update AKS cluster with OIDC issuer and container registry attachment
 
 Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer.
 
@@ -48,7 +49,7 @@ az aks update -g "$RESOURCE_GROUP" -n k8s --enable-oidc-issuer --attach-acr $ACR
 
 ````
 
-### Get the OICD issuer URL
+## Get the OICD issuer URL
 
 Query the AKS cluster for the OICD issuer URL with the following command, which stores the reult in an environment variable.
 
@@ -59,7 +60,7 @@ export AKS_OIDC_ISSUER="$(az aks show -n myAKSCluster -g $RESOURCE_GROUP  --quer
 The variable should contain the Issuer URL similar to the following:
  ````https://eastus.oic.prod-aks.azure.com/9e08065f-6106-4526-9b01-d6c64753fe02/9a518161-4400-4e57-9913-d8d82344b504/````
 
- ### Create keyvault
+ ## Create keyvault
 
 Create a keyvault in the same resource group as the other resources (not neccesary for in to be in the same RG, but for clarity)
 
@@ -67,7 +68,7 @@ Create a keyvault in the same resource group as the other resources (not neccesa
  az keyvault create --resource-group $RESOURCE_GROUP  --location $LOCATION  --name $KEYVAULT_NAME 
  ````
 
- ### Add a secret to the vault
+ ## Add a secret to the vault
 
 Create a secret in the keyvault. This is the secret that will be used by the frontend application to connect to the (redis) backend.
 
@@ -75,12 +76,12 @@ Create a secret in the keyvault. This is the secret that will be used by the fro
  az keyvault secret set --vault-name $KEYVAULT_NAME  --name $KEYVAULT_SECRET_NAME  --value 'redispassword'
  ````
 
-### Add the Key Vault URL to the environment variable *KEYVAULT_URL*
+## Add the Key Vault URL to the environment variable *KEYVAULT_URL*
  ````
  export KEYVAULT_URL="$(az keyvault show -g $RESOURCE_GROUP  -n ${KEYVAULT_NAME} --query properties.vaultUri -o tsv)"
  ````
 
- ### Create a managed identity and grant permissions to access the secret
+ ## Create a managed identity and grant permissions to access the secret
 
 Create a User Managed Identity. We will give this identity *GET access* to the keyvault, and later associate it with a Kubernetes service account. 
 
@@ -99,7 +100,7 @@ Create a User Managed Identity. We will give this identity *GET access* to the k
  ````
 
 
- ### Create Kubernetes service account
+ ## Create Kubernetes service account
 
 First, connect to the cluster if not already connected
  
@@ -107,7 +108,7 @@ First, connect to the cluster if not already connected
  az aks get-credentials -n myAKSCluster -g $RESOURCE_GROUP 
  ````
 
-#### Create service account
+### Create service account
 
 The service account should exist in the frontend namespace, because it's the frontend service that will use that service account to get the credentials to connect to the (redis) backend service.
 
@@ -138,7 +139,7 @@ EOF
 ````
 
 
-### Establish federated identity credential
+## Establish federated identity credential
 
 In this step we connect the service account with the user defined managed identity, using a federated credential.
 
@@ -146,7 +147,7 @@ In this step we connect the service account with the user defined managed identi
 az identity federated-credential create --name ${FEDERATED_IDENTITY_CREDENTIAL_NAME} --identity-name ${USER_ASSIGNED_IDENTITY_NAME} --resource-group ${RESOURCE_GROUP} --issuer ${AKS_OIDC_ISSUER} --subject system:serviceaccount:${FRONTEND_NAMESPACE}:${SERVICE_ACCOUNT_NAME}
 ````
 
-### Build the application
+## Build the application
 
 Now its time to build the application. In order to do so, first clone the applications repository:
 
@@ -164,7 +165,7 @@ az acr build --image azure-vote:v1 --registry $CONTAINERREGISTRY .
 
 
 
-### Deploy the application
+## Deploy the application
 
 We want to create some separation between the frontend and backend, by deploying them into different namespaces. Later we will add more separation by introducing network policies in the cluster to allow/disallow traffic between specific namespaces.
 
@@ -297,3 +298,27 @@ EOF
 
 
 If the frontend application can connect to the backend redis store, you have succeded!
+
+You can further validate (or troubleshoot) by reading the logs of the frontend pod. To do that, you need to find the name of the pod:
+````
+kubectl get pods ---namespace frontend
+````
+This should give a result timilar to this
+````
+NAME                                READY   STATUS    RESTARTS        AGE
+azure-vote-front-85d6c66c4d-pgtw9   1/1     Running   29 (7m3s ago)   3h13m
+````
+
+Now you can read the logs of the application by running this command (but with YOUR pod name)
+````
+kubectl logs azure-vote-front-85d6c66c4d-pgtw9 --namespace frontend
+````
+
+You should be able to find a line like this:
+````
+Connecting to Redis... azure-vote-back.backend
+````
+And then a little later:
+````
+Connected to Redis!
+````
