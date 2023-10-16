@@ -173,18 +173,18 @@ az identity federated-credential create --name ${FEDERATED_IDENTITY_CREDENTIAL_N
 Now its time to build the application. In order to do so, first clone the applications repository:
 
 ````
-git clone git@github.com:pelithne/azure-voting-app-redis.git
+git clone https://github.com/pelithne/az-vote-with-workload-identity.git
 ````
 Then CD into the directory where the (python) application resides and issue the acr build command
 
 ````
-cd azure-voting-app-redis
+cd cd az-vote-with-workload-identity
 cd azure-vote 
 az acr build --image azure-vote:v1 --registry $ACRNAME .
 
 ````
 
-
+The last command will build a container image inside your container registry, and give it the tag ````v1````
 
 ## Deploy the application
 
