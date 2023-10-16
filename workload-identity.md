@@ -28,7 +28,7 @@ Pro-tip: Save them into a file, so that you can restore them if cloudshell times
 
 ````
 export RESOURCE_GROUP="security-basics"
-export LOCATION="swedencentral"
+export LOCATION="westeurope"
 export FRONTEND_NAMESPACE="frontend"
 export BACKEND_NAMESPACE="backend"
 export SERVICE_ACCOUNT_NAME="workload-identity-sa"
