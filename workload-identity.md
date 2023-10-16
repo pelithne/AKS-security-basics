@@ -1,5 +1,14 @@
 # Workload Identity
 
+
+## Introduction
+
+Workload identity allows you to securely access Azure resources from your Kubernetes applications using Azure AD identities. This way, you can avoid storing and managing credentials in your cluster, and instead rely on the native Kubernetes mechanisms to federate with external identity providers.
+
+Workload identity replaces the deprecated pod identity feature, and is the recommended way to manage identity for workloads. 
+
+more information about workload identity can be found here: [Use Azure AD workload identity with Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview?tabs=dotnet)
+
 During this activity you will:
 
 * Create an Azure Container Registry (ACR)
@@ -10,6 +19,8 @@ During this activity you will:
 * Connect the MI to a Kubernetes service account with token federation
 * Deploy a workload and verify authentication to keyvault with the workload identity
 
+
+## Environment variables
 
 First, lets create a few environment variables, for ease of use. 
 
