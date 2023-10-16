@@ -25,20 +25,15 @@ Start cloud shell by typing the address ````shell.azure.com```` into a web brows
 
 **Protip II: Cloud Shell will time out after 20 minutes of inactivity. When you log back in, you will end up in your home directory, so be sure to ````cd```` into where you are supposed to be.**
 
-## 2.3. Subscription
-You need a valid Azure subscription. To use a specific subscription, use the ````account```` command like this (with your subscription id):
-````
-az account set --subscription <subscription-id>
-````
-
 # 3. Initial Setup
 
 ## 3.1 Environment variables
 For convenience, create a few environment variables to stor values that are frequently reused during the workshop.
 
-````
+````bash
 RESOURCE_GROUP=security-workshop
 CLUSTERNAME=k8s
+LOCATION=westeurope
 
 ````
 
@@ -51,7 +46,7 @@ All resources in Azure exists in a *Resource Group*. The resource group is a "pl
 All the resources you create in this workshop will use the same Resource Group. Use the commnd below to create the resource group.
 
 ````bash
-az group create -n  $RESOURCE_GROUP -l swedencentral
+az group create -n  $RESOURCE_GROUP -l $LOCATION
 ````
 
 
@@ -70,7 +65,7 @@ Kubernetes provides a distributed platform for containerized applications. You b
 
 Create an AKS cluster using ````az aks create```` command:
 
-```azurecli
+```bash
 az aks create --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME --node-count 2 --node-vm-size Standard_D2s_v4 --no-ssh-key  --network-plugin azure --network-policy azure
 ```
 
@@ -83,7 +78,7 @@ The creation time for the cluster should be around 4-5 minutes.
 
 In order to use `kubectl` you need to connect to the Kubernetes cluster, using the following command:
 
-```azurecli
+```bash
 az aks get-credentials --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME
 ```
 
@@ -137,12 +132,16 @@ ADMIN_GROUP_ID=$(az ad group show --group admin --query 'id' --output tsv)
 az role assignment create --assignee $ADMIN_GROUP_ID --role "Azure Kubernetes Service RBAC Cluster Admin" --scope $AKS_RESOURCE_ID
  ````
 
-
-
-Create the Admin user:
+To create the user account in the next step, you need to know the domain name of your tenant. Here is how you can get it.
 
 ````bash
-az ad user create --display-name admin  --user-principal-name <user-principal-name> --password Something_secure123
+DOMAIN=$(az account show --query 'user.name' -o tsv | sed 's/.*@/@/')
+````
+
+Create the Admin user called John Doe.
+
+````bash
+az ad user create --display-name John Doe  --user-principal-name john$DOMAIN --password Something_secure123
 ````
 
 Assign the admin user to admin group for the AKS cluster.
@@ -150,7 +149,7 @@ Assign the admin user to admin group for the AKS cluster.
 First get the object id of the user as we will need this number to assign the user to the admin group. For convenience, you can put it in an environment variable
 
 ````bash
-ADMIN_USER_ID=$(az ad user show --id <user-principal-name> --query 'id' --output tsv)
+ADMIN_USER_ID=$(az ad user show --id john$DOMAIN --query 'id' --output tsv)
 ````
 
 Assign the user to the admin security group.
