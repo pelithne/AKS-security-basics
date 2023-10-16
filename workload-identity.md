@@ -180,7 +180,7 @@ Then CD into the directory where the (python) application resides and issue the 
 ````
 cd azure-voting-app-redis
 cd azure-vote 
-az acr build --image azure-vote:v1 --registry $CONTAINERREGISTRY .
+az acr build --image azure-vote:v1 --registry $ACRNAME .
 
 ````
 
