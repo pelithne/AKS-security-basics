@@ -43,9 +43,9 @@ export ACRNAME=<your globally unique container registry name>
 
 
 
-## Create Container Registry
+## Create Azure Container Registry (ACR)
 
-You will build an application that you will store in ACR. To create it, run this command:
+Later in this section you will build an application that you will store in Azure Container Registry. To create the registry, run this command:
 
 ````
  az acr create --resource-group $RESOURCE_GROUP --name $ACRNAME 
@@ -53,7 +53,9 @@ You will build an application that you will store in ACR. To create it, run this
 
 ## Update AKS cluster with OIDC issuer and container registry attachment
 
-Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer.
+Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer. Enabling OIDC on the cluster means it well be allowed to act as an external identity provider, which we will connect to Entra ID (Azure AD).
+
+The update will take a couple of minutes, so... Coffee Time?
 
 ````
 az aks update -g "$RESOURCE_GROUP" -n k8s --enable-oidc-issuer --attach-acr $ACRNAME
@@ -68,10 +70,18 @@ Query the AKS cluster for the OICD issuer URL with the following command, which 
 export AKS_OIDC_ISSUER="$(az aks show -n myAKSCluster -g $RESOURCE_GROUP  --query "oidcIssuerProfile.issuerUrl" -otsv)"
 ````
 
+
+After storing the output of a command in an environment variable, its always a good idea to check the content:
+````
+echo $AKS_OIDC_ISSUER
+````
+
 The variable should contain the Issuer URL similar to the following:
  ````https://eastus.oic.prod-aks.azure.com/9e08065f-6106-4526-9b01-d6c64753fe02/9a518161-4400-4e57-9913-d8d82344b504/````
 
- ## Create keyvault
+
+
+## Create keyvault
 
 Create a keyvault in the same resource group as the other resources (not neccesary for in to be in the same RG, but for clarity)
 
@@ -79,7 +89,7 @@ Create a keyvault in the same resource group as the other resources (not neccesa
  az keyvault create --resource-group $RESOURCE_GROUP  --location $LOCATION  --name $KEYVAULT_NAME 
  ````
 
- ## Add a secret to the vault
+## Add a secret to the vault
 
 Create a secret in the keyvault. This is the secret that will be used by the frontend application to connect to the (redis) backend.
 
