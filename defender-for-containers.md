@@ -1,4 +1,4 @@
-# Defender for containers
+# Defender for Containers
 
 
 ## Introduction
@@ -20,3 +20,18 @@ During this activity you will:
 
 * Scan Container images for vulnerabilities.
 * Threat hunting for vulnerabilities in your AKS cluster.
+
+Import the metasploit vulnerability emulator docker image from Docker Hub to your Azure container registry.
+
+## Import Vulnerable images to Container Registry
+
+````bash
+az acr import --name $ACRNAME --source docker.io/vulnerables/metasploit-vulnerability-emulator
+````
+Verify that the docker image is stored in your container registry.
+
+````bash
+az acr repository list --name $ACRNAME
+````
+
+## Review Microsoft Defender for Containers Assessments
