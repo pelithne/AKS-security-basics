@@ -139,14 +139,14 @@ Lets access the cluster with admin permissions.
 Create the security group in Azure AD for **Cluster Admin**
 
 ````bash
-az ad group create --display-name admin --mail-nickname admin
+az ad group create --display-name AKSAdminGroup --mail-nickname AKSAdminGroup
 ````
 
-Then grant the **Admin** group users the permissions to connect to and manage all aspects of the AKS cluster. For this you need the reource ID of your cluster and the object ID of your management group. For convenience you can put it in environment variables:
+Then grant the **AKSAdminGroup** group users the permissions to connect to and manage all aspects of the AKS cluster. For this you need the reource ID of your cluster and the object ID of your management group. For convenience you can put it in environment variables:
 
 ````bash
 AKS_RESOURCE_ID=$(az aks show -g  $RESOURCE_GROUP -n  $CLUSTERNAME --query 'id' --output tsv)
-ADMIN_GROUP_ID=$(az ad group show --group admin --query 'id' --output tsv)
+ADMIN_GROUP_ID=$(az ad group show --group AKSAdminGroup --query 'id' --output tsv)
 ````
 
 
@@ -177,7 +177,7 @@ ADMIN_USER_ID=$(az ad user show --id john$DOMAIN --query 'id' --output tsv)
 Assign the user to the admin security group.
 
 ````bash
-az ad group member add --group admin --member-id $ADMIN_USER_ID
+az ad group member add --group AKSAdminGroup --member-id $ADMIN_USER_ID
 ````
 
 ### Validate the access to the cluster.
