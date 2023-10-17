@@ -14,7 +14,7 @@ In this section you learn how to:
 Before you upgrade, check which Kubernetes releases are available for your cluster using the ````az aks get-upgrades```` command.
 
 ````bash
-az aks get-upgrades --resource-group $RESOURCE_GROUP --name $CLUSTERNAME`
+az aks get-upgrades --resource-group $RESOURCE_GROUP --name $CLUSTERNAME
 ````
 
 The following example output shows the current version as *1.26.6* and lists the available versions under *upgrades*.
@@ -120,3 +120,28 @@ The following example output shows the AKS cluster runs *KubernetesVersion 1.27.
 k8s     westeurope     security-workshop  1.27.3               1.27.3                      Succeeded            k8s-security-worksho-16153f-mwrte3d1.hcp.westeurope.azmk8s.io
 ````
 
+## Allowed upgrade paths
+Kubernetes can only be upgraded one minor version at a time. For example, you can upgrade from 1.26.x to 1.27.x, but you can't upgrade from 1.26.x to 1.28.x directly. To upgrade from 1.26.x to 1.28.x, you must first upgrade from 1.26.x to 1.27.x, then perform another upgrade from 1.27.x to 1.28.x.
+
+As you are now on 1.27.3, you should be able to see the available upgrade to 1.28.0. You can confirm this by once again running this command:
+
+````
+az aks get-upgrades --resource-group $RESOURCE_GROUP --name $CLUSTERNAME
+````
+
+You should see the following output
+
+````
+  "agentPoolProfiles": null,
+  "controlPlaneProfile": {
+    "kubernetesVersion": "1.27.3",
+    "name": null,
+    "osType": "Linux",
+    "upgrades": [
+      {
+        "isPreview": true,
+        "kubernetesVersion": "1.28.0"
+      }
+    ]
+  }
+````
