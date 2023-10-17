@@ -25,6 +25,34 @@ Start cloud shell by typing the address ````shell.azure.com```` into a web brows
 
 **Protip II: Cloud Shell will time out after 20 minutes of inactivity. When you log back in, you will end up in your home directory, so be sure to ````cd```` into where you are supposed to be.**
 
+## 2.3. Enable Microsoft Defender for Containers
+We will activate Microsoft Defender for Containers now, because it takes some time for the initial activation and configuration to complete. By enabling it early, we can ensure that our containers are protected as soon as possible and avoid any potential security gaps. To enable Microsoft Defender for Containers, we will follow these steps:
+
+1) Open your web browser and navigate to the Azure portal at https://portal.azure.com and enter your login credentials provided.
+
+2) Once you have successfully logged in to Azure, Type in **Microsoft Defender for Cloud** in the search field. 
+3) From the drop down menu click on  **Microsoft Defender for Cloud**.
+
+![Screenshot](/images/mdc-step1.png)
+
+4) In the Microsoft Defender for Cloud overview page, Click **Environment settings** in the left hand side menu under the **Management** section.
+
+5) Expand the **Tenant Root Group**.
+
+6) On the far right hand side of the subscription click on the **three dots** to open the context menu.
+
+7) From the context menu click on **Edit settings**.
+
+![Screenshot](/images/mdc-step2.png)
+
+8) On the Containers plan toggle the bar to **On**
+
+9) Ensure the Monitoring coverage states **Full**
+
+10) Press **Save**
+
+![Screenshot](/images/mdc-step3.png)
+
 # 3. Initial Setup
 
 ## 3.1 Environment variables
