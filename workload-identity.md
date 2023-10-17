@@ -99,7 +99,7 @@ Create a secret in the keyvault. This is the secret that will be used by the fro
 
 ## Add the Key Vault URL to the environment variable *KEYVAULT_URL*
  ````
- export KEYVAULT_URL="$(az keyvault show -g $RESOURCE_GROUP  -n ${KEYVAULT_NAME} --query properties.vaultUri -o tsv)"
+ export KEYVAULT_URL="$(az keyvault show -g $RESOURCE_GROUP  -n $KEYVAULT_NAME --query properties.vaultUri -o tsv)"
  ````
 
  ## Create a managed identity and grant permissions to access the secret
@@ -154,23 +154,26 @@ kind: ServiceAccount
 metadata:
   namespace: $FRONTEND_NAMESPACE
   annotations:
-    azure.workload.identity/client-id: ${USER_ASSIGNED_CLIENT_ID}
-  name: ${SERVICE_ACCOUNT_NAME}
+    azure.workload.identity/client-id: $USER_ASSIGNED_CLIENT_ID
+  name: $SERVICE_ACCOUNT_NAME
 EOF
 ````
 
 
 ## Establish federated identity credential
 
-In this step we connect the service account with the user defined managed identity, using a federated credential.
+In this step we connect the service account with the user defined managed identity, using a federated credential. 
 
 ````
-az identity federated-credential create --name ${FEDERATED_IDENTITY_CREDENTIAL_NAME} --identity-name ${USER_ASSIGNED_IDENTITY_NAME} --resource-group ${RESOURCE_GROUP} --issuer ${AKS_OIDC_ISSUER} --subject system:serviceaccount:${FRONTEND_NAMESPACE}:${SERVICE_ACCOUNT_NAME}
+az identity federated-credential create --name $FEDERATED_IDENTITY_CREDENTIAL_NAME --identity-name $USER_ASSIGNED_IDENTITY_NAME --resource-group $RESOURCE_GROUP --issuer $AKS_OIDC_ISSUER --subject system:serviceaccount:$FRONTEND_NAMESPACE:$SERVICE_ACCOUNT_NAME
 ````
 
 ## Build the application
 
-Now its time to build the application. In order to do so, first clone the applications repository:
+Now its time to build the application, which is a simple python frontend. The application uses a redis container as it's "database layer" and connects to Redis using a password. This password is stored as a secret in a keyvault, and the frontend uses the workload identity feature to get access to that secret (the code uses Azure Identity client libraries)
+
+
+In order to build the application, first clone the applications repository:
 
 ````
 git clone https://github.com/pelithne/az-vote-with-workload-identity.git
@@ -185,6 +188,8 @@ az acr build --image azure-vote:v1 --registry $ACRNAME .
 ````
 
 The last command will build a container image inside your container registry, and give it the tag ````v1````
+
+### NOTE: you do not have to make any changes, but feel free to have a look at the code which can be found in ````main.py```` in the ````azrure-vote/azrure-vote```` folder (sorry! Naming folders is hard :-) ).
 
 ## Deploy the application
 
@@ -205,12 +210,11 @@ metadata:
 EOF
 ````
 
-cd only neccesery if using yaml files
-````
-cd ..
-````
 
-Backend
+Now create the Redis backend deployment. The container image will be downloaded from ````mcr.microsoft.com/oss/bitnami/redis:6.0.8```` so you don't have to push anything to your own container registry.
+
+As you can see in the yaml, we send the password as a clear text environment variable to the redis container. This is NOT how you should to this. Instead a keyvault should be used, but in the interest of timekeeping we allow this malpractice for now.
+
 ````
 cat <<EOF | kubectl apply -f -
 apiVersion: apps/v1
@@ -254,7 +258,7 @@ EOF
 ````
 
 
-Then create the frontend. In this case we already created the frontend namespace in an earlier step.
+Then create the frontend. In this case we already created the frontend namespace in an earlier step. The container image for the frontend is the on you built in a previous step ````$ACRNAME.azurecr.io/azure-vote:v1````
 
 ````
 cat <<EOF | kubectl apply -f -
@@ -286,7 +290,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: azure-vote-front
-        image: pelithnepubacr.azurecr.io/azure-vote:v19
+        image: $ACRNAME.azurecr.io/azure-vote:v1
         ports:
         - containerPort: 80
         resources:
