@@ -146,6 +146,8 @@ metadata:
 EOF
 ````
 
+#### Note: instead of using yaml-files we use inline text, for convenience. In a more realistic scenario, you would have created yaml-manifests and stored them under version control.
+
 Then create a service account in that namespace. Notice the annotation for *workload identity*
 ````
 cat <<EOF | kubectl apply -f -
