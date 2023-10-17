@@ -1,6 +1,6 @@
 # Upgrade Management
 
-As part of the application and cluster lifecycle, you may want to upgrade to the latest available version of Kubernetes. You can upgrade your Azure Kubernetes Service (AKS) cluster using the Azure CLI, Azure PowerShell, or the Azure portal. IN this instuction you will use the Azure CLI.
+As part of the application and cluster lifecycle, you need to make sure to stay on a current version of Kubernetes. You can upgrade your Azure Kubernetes Service (AKS) cluster using the Azure CLI, Azure PowerShell, or the Azure portal. In this instuction you will use the Azure CLI.
 
 In this section you learn how to:
 
