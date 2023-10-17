@@ -108,13 +108,35 @@ Update the existing AKS cluster to support Microsoft Entra ID integration, and c
 ````bash
 az aks update -g  $RESOURCE_GROUP -n  $CLUSTERNAME --enable-azure-rbac --enable-aad --disable-local-accounts
 ````
+Remove the kubeconfig file from your local filesystem.
 
-At this point, if you try to communicate with the Kubernetes API it will not be permitted. For instance you can try
+````bash
+rm -fr .kube
+````
+Download the AKS credentials.
 
-###TODO: validate access restriction in a good way.
+```bash
+az aks get-credentials --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME
+```
+Use the following command to check the status of your cluster nodes. 
 
+````bash
+kubectl get nodes
+````
 
-Then create the security group in Azure AD for **Cluster Admin**
+**Sign in with your Microsoft Entra ID credentials and get Azure RBAC permissions to use the Kubernetes API.** This is needed because your cluster has Microsoft Entra ID integration and Azure RBAC enabled.
+
+Example output:
+````bash
+contoso@DESKTOP-6FPE1AE:~$ kubectl get nodes
+To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code XXXXXXXX to authenticate.
+Error from server (Forbidden): nodes is forbidden: User "demo@XXXXXXXX.onmicrosoft.com" cannot list resource "nodes" in API group "" at the cluster scope: User does not have access to the resource in Azure. Update role assignment to allow access.
+````
+This error occurs because you have signed in with Azure AD and you do not have the appropriate role assignment in Azure RBAC to access any Kubernetes API objectS. To fix this, you need to create a user with the appropiate role assignment to the Azure Kubernetes Service cluster.
+
+Lets access the cluster with admin permissions.
+
+Create the security group in Azure AD for **Cluster Admin**
 
 ````bash
 az ad group create --display-name admin --mail-nickname admin
@@ -141,7 +163,7 @@ DOMAIN=$(az account show --query 'user.name' -o tsv | sed 's/.*@/@/')
 Create the Admin user called John Doe.
 
 ````bash
-az ad user create --display-name John Doe  --user-principal-name john$DOMAIN --password Something_secure123
+az ad user create --display-name 'John Doe'  --user-principal-name john$DOMAIN --password Something_secure123
 ````
 
 Assign the admin user to admin group for the AKS cluster.
@@ -160,8 +182,35 @@ az ad group member add --group admin --member-id $ADMIN_USER_ID
 
 ### Validate the access to the cluster.
 
-````
-az aks get-creadentials -g  $RESOURCE_GROUP -n k8s
+Obtain the AKS credentials. 
+
+````bash
+az aks get-credentials -g  $RESOURCE_GROUP -n $CLUSTERNAME
 ````
 
-This will trigger a login procedure after which you should be able to interact with the Kubernetes API 
+List all nodes on the cluster. This will trigger a login procedure after which you should be able to interact with the Kubernetes API. login with the user ***John Doe*** 
+
+````bash
+kubectl get nodes
+````
+example output:
+
+````bash
+alibengtsson@DESKTOP-6FPE1AE:~$ kubectl get nodes
+To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code XXXXXXXX to authenticate.
+NAME                                STATUS   ROLES   AGE   VERSION
+aks-nodepool1-18760117-vmss000000   Ready    agent   53m   v1.26.6
+aks-nodepool1-18760117-vmss000001   Ready    agent   53m   v1.26.6
+alibengtsson@DESKTOP-6FPE1AE:~$
+````
+Create a namespace called test-ns in the AKS cluster. 
+
+````bash
+kubectl create ns test-ns
+````
+
+Verify the creation of the namespace.
+
+````bash
+kubectl get namespaces
+````
