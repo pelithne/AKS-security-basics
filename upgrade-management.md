@@ -67,7 +67,7 @@ The following example output shows part of the result of upgrading to *1.27.3*. 
 ````
 "kubernetesVersion": "1.27.3",
 "linuxProfile": null,
-"location": "swedencentral",
+"location": "westeurope",
 "maxAgentPools": 100,
 "name": "k8s",
 "networkProfile": {
