@@ -189,7 +189,7 @@ az acr build --image azure-vote:v1 --registry $ACRNAME .
 
 The last command will build a container image inside your container registry, and give it the tag ````v1````
 
-### NOTE: you do not have to make any changes, but feel free to have a look at the code which can be found in ````main.py```` in the ````azrure-vote/azrure-vote```` folder (sorry! Naming folders is hard :-) ).
+#### NOTE: you do not have to make any changes, but feel free to have a look at the code which can be found in ````main.py```` in the ````azrure-vote/azrure-vote```` folder (sorry! Naming folders is hard :-) ).
 
 ## Deploy the application
 
