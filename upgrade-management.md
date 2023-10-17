@@ -44,7 +44,7 @@ The following example output shows the current version as *1.26.6* and lists the
 
 AKS nodes are carefully cordoned and drained to minimize any potential disruptions to running applications. During this process, AKS performs the following steps:
 
-* Adds a new buffer node (or as many nodes as configured in [max surge](./upgrade-cluster.md#customize-node-surge-upgrade)) to the cluster that runs the specified Kubernetes version.
+* Adds a new buffer node (or as many nodes as configured in ````max surge````) to the cluster that runs the specified Kubernetes version.
 * Cordons and drains one of the old nodes to minimize disruption to running applications. If you're using max surge, it cordons and drains as many nodes at the same time as the number of buffer nodes specified.
 * When the old node is drained, it's reimaged to receive the new version and becomes the buffer node for the following node to be upgraded.
 * This process repeats until all nodes in the cluster have been upgraded.
@@ -86,7 +86,7 @@ When you upgrade your cluster, the following Kubernetes events may occur on the 
  * **Update**: Update of a node has succeeded or failed.
  * **Delete**: Delete a surge node.
 
-* View the upgrade events in the default namespaces using the `kubectl get events` command.
+View the upgrade events in the default namespaces using the `kubectl get events` command.
 
 ````bash
 kubectl get events 
@@ -98,7 +98,7 @@ The following example output shows some of the above events listed during an upg
 ...
 default 2m1s Normal Drain node/aks-nodepool1-96663640-vmss000001 Draining node: [aks-nodepool1-96663640-vmss000001]
 ...
-default 9m22s Normal Surge node/aks-nodepool1-96663640-vmss000002 Created a surge node [aks-nodepool1-96663640-vmss000002 nodepool1] for agentpool %!s(MISSING)
+default 9m22s Normal Surge node/aks-nodepool1-96663640-vmss000002 Created a surge node [aks-nodepool1-96663640-vmss000002 nodepool1] for agentpool 
 ...
 ````
 
@@ -106,7 +106,7 @@ default 9m22s Normal Surge node/aks-nodepool1-96663640-vmss000002 Created a surg
 
 ## Validate an upgrade
 
-* Confirm the upgrade was successful using the ````az aks show```` command.
+Confirm the upgrade was successful using the ````az aks show```` command.
 
 ````bash
 az aks show --resource-group $RESOURCE_GROUP --name $CLUSTERNAME --output table
