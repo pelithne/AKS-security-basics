@@ -13,11 +13,11 @@ In this section you learn how to:
 
 Before you upgrade, check which Kubernetes releases are available for your cluster using the ````az aks get-upgrades```` command.
 
-    ````bash
-    az aks get-upgrades --resource-group $RESOURCE_GROUP --name $CLUSTERNAME
-    ````
+````bash
+az aks get-upgrades --resource-group $RESOURCE_GROUP --name $CLUSTERNAME`
+````
 
-    The following example output shows the current version as *1.26.6* and lists the available versions under *upgrades*.
+The following example output shows the current version as *1.26.6* and lists the available versions under *upgrades*.
 
 ````output
 
@@ -52,29 +52,29 @@ AKS nodes are carefully cordoned and drained to minimize any potential disruptio
 
 Upgrade your cluster to 1.27.3 using the ````az aks upgrade```` command.
 
-    ````bash
-    az aks upgrade \
-        --resource-group $RESOURCE_GROUP \
-        --name $CLUSTERNAME \
-        --kubernetes-version 1.27.3
-    ````
+````bash
+az aks upgrade \
+    --resource-group $RESOURCE_GROUP \
+    --name $CLUSTERNAME \
+    --kubernetes-version 1.27.3
+````
 
 Select "y" to the questions.
 
 
-    The following example output shows part of the result of upgrading to *1.27.3*. Notice the *kubernetesVersion* now shows *1.27.3*. 
+The following example output shows part of the result of upgrading to *1.27.3*. Notice the *kubernetesVersion* now shows *1.27.3*. 
 
 ````
-  "kubernetesVersion": "1.27.3",
-  "linuxProfile": null,
-  "location": "swedencentral",
-  "maxAgentPools": 100,
-  "name": "k8s",
-  "networkProfile": {
-    "dnsServiceIp": "10.0.0.10",
-    "ipFamilies": [
-      "IPv4"
-    ],
+"kubernetesVersion": "1.27.3",
+"linuxProfile": null,
+"location": "swedencentral",
+"maxAgentPools": 100,
+"name": "k8s",
+"networkProfile": {
+"dnsServiceIp": "10.0.0.10",
+"ipFamilies": [
+    "IPv4"
+],
 ````
 
 
@@ -88,19 +88,19 @@ When you upgrade your cluster, the following Kubernetes events may occur on the 
 
 * View the upgrade events in the default namespaces using the `kubectl get events` command.
 
-    ````bash
-    kubectl get events 
-    ````
+````bash
+kubectl get events 
+````
 
-    The following example output shows some of the above events listed during an upgrade.
+The following example output shows some of the above events listed during an upgrade.
 
-    ````output
-    ...
-    default 2m1s Normal Drain node/aks-nodepool1-96663640-vmss000001 Draining node: [aks-nodepool1-96663640-vmss000001]
-    ...
-    default 9m22s Normal Surge node/aks-nodepool1-96663640-vmss000002 Created a surge node [aks-nodepool1-96663640-vmss000002 nodepool1] for agentpool %!s(MISSING)
-    ...
-    ````
+````output
+...
+default 2m1s Normal Drain node/aks-nodepool1-96663640-vmss000001 Draining node: [aks-nodepool1-96663640-vmss000001]
+...
+default 9m22s Normal Surge node/aks-nodepool1-96663640-vmss000002 Created a surge node [aks-nodepool1-96663640-vmss000002 nodepool1] for agentpool %!s(MISSING)
+...
+````
 
 
 
@@ -108,15 +108,15 @@ When you upgrade your cluster, the following Kubernetes events may occur on the 
 
 * Confirm the upgrade was successful using the ````az aks show```` command.
 
-    ````bash
-    az aks show --resource-group $RESOURCE_GROUP --name $CLUSTERNAME --output table
-    ````
+````bash
+az aks show --resource-group $RESOURCE_GROUP --name $CLUSTERNAME --output table
+````
 
-    The following example output shows the AKS cluster runs *KubernetesVersion 1.27.3:
+The following example output shows the AKS cluster runs *KubernetesVersion 1.27.3:
 
-    ````output
+````output
  Name    Location       ResourceGroup      KubernetesVersion    CurrentKubernetesVersion    ProvisioningState    Fqdn
 ------  -------------  -----------------  -------------------  --------------------------  -------------------  ----------------------------------------------------------------
 k8s     westeurope     security-workshop  1.27.3               1.27.3                      Succeeded            k8s-security-worksho-16153f-mwrte3d1.hcp.westeurope.azmk8s.io
-    ````
+````
 
