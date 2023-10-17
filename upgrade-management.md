@@ -64,7 +64,7 @@ Select "y" to the questions.
 
     The following example output shows part of the result of upgrading to *1.27.3*. Notice the *kubernetesVersion* now shows *1.27.3*. 
 
-    ````output
+````
   "kubernetesVersion": "1.27.3",
   "linuxProfile": null,
   "location": "swedencentral",
@@ -75,7 +75,7 @@ Select "y" to the questions.
     "ipFamilies": [
       "IPv4"
     ],
-    ````
+````
 
 
 ## View the upgrade events
