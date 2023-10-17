@@ -48,7 +48,7 @@ export ACRNAME=<your globally unique container registry name>
 Later in this section you will build an application that you will store in Azure Container Registry. To create the registry, run this command:
 
 ````
- az acr create --resource-group $RESOURCE_GROUP --name $ACRNAME 
+ az acr create --resource-group $RESOURCE_GROUP --name $ACRNAME --sku Standard
 ````
 
 ## Update AKS cluster with OIDC issuer and container registry attachment
