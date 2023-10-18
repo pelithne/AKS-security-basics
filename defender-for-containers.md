@@ -128,4 +128,14 @@ Verify that the docker image is stored in your container registry.
 az acr repository list --name $ACRNAME
 ````
 
+Example output:
+````bash
+demo@DESKTOP-6FPE1AE:~$ az acr repository list -n $ACRNAME
+[
+  "vulnerables/metasploit-vulnerability-emulator"
+]
+````
+
 ## Review Microsoft Defender for Containers Assessments
+
+
