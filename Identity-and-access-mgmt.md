@@ -136,7 +136,7 @@ Update the existing AKS cluster to support Microsoft Entra ID integration, and c
 ````bash
 az aks update -g  $RESOURCE_GROUP -n  $CLUSTERNAME --enable-azure-rbac --enable-aad --disable-local-accounts
 ````
-Remove the kubeconfig file from your local filesystem.
+Remove the kubeconfig file from your local filesystem. This is done to remove the access key that allows you to communicate with the Kubernetes API. Normally this would be done by rotating the certificates in AKS by an administrator, but this work-around saves us a time. 
 
 ````bash
 rm -fr .kube
