@@ -27,7 +27,7 @@ First, lets create a few environment variables, for ease of use.
 Pro-tip: Save them into a file, so that you can restore them if cloudshell times out (which it will)
 
 ````
-export RESOURCE_GROUP="security-basics"
+export RESOURCE_GROUP="security-workshop"
 export LOCATION="westeurope"
 export FRONTEND_NAMESPACE="frontend"
 export BACKEND_NAMESPACE="backend"
@@ -115,7 +115,7 @@ Create a User Managed Identity. We will give this identity *GET access* to the k
  Set an access policy for the managed identity to access the Key Vault
 
  ````
- export USER_ASSIGNED_CLIENT_ID=$az identity show --resource-group $RESOURCE_GROUP  --name $USER_ASSIGNED_IDENTITY_NAME  --query 'clientId' -otsv)"
+ export USER_ASSIGNED_CLIENT_ID="$(az identity show --resource-group $RESOURCE_GROUP  --name $USER_ASSIGNED_IDENTITY_NAME  --query 'clientId' -otsv)"
 
  az keyvault set-policy --name $KEYVAULT_NAME  --secret-permissions get --spn $USER_ASSIGNED_CLIENT_ID 
  ````
@@ -135,6 +135,8 @@ The service account should exist in the frontend namespace, because it's the fro
 
 First create the namespace
 
+#### Note: instead of using yaml-files we use inline text, for convenience. In a more realistic scenario, you would have created yaml-manifests and stored them under version control.
+
 ````
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
@@ -146,7 +148,7 @@ metadata:
 EOF
 ````
 
-#### Note: instead of using yaml-files we use inline text, for convenience. In a more realistic scenario, you would have created yaml-manifests and stored them under version control.
+
 
 Then create a service account in that namespace. Notice the annotation for *workload identity*
 ````
