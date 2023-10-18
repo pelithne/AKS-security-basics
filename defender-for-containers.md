@@ -161,11 +161,9 @@ demo@DESKTOP-6FPE1AE:~$ az acr repository list -n $ACRNAME
 
 7) To get more details and mitigation steps for a specific vulnerability, select it from the list. Microsoft Defender for cloud will guide you to harden your container image.
 
-Identify a finding from the list and click on it. a side menu should appear and provide you with an overall information about the vulnerability. 
+8) For more information and steps to fix a specific CVE in your container image, you can use the Take Action feature of Microsoft Defender for cloud. This feature will show you the data that supports the security recommendation and help you resolve the issue. Select **Take Action** to use this feature.
 
 ![Screenshot](/images/Slide6.PNG)
-
-8) For more information and steps to fix the specific CVEs in your container image, you can use the Take Action feature of Microsoft Defender for cloud. This feature will show you the data that supports the security recommendation and help you resolve the issue. Select **Take Action** to use this feature.
 
 
 9) Click on the **container image**
