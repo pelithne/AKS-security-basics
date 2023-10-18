@@ -18,8 +18,9 @@ Make sure you have enabled Microsoft Defender for Container before you follow th
 
 During this activity you will:
 
-* Scan Container images for vulnerabilities.
-* Threat hunting for vulnerabilities in your AKS cluster.
+* Scan Container image for vulnerabilities.
+* Simulate a Security Alert for Kubernetes workload
+* investigate and remediate Vulnerabilities.
 
 Import the metasploit vulnerability emulator docker image from Docker Hub to your Azure container registry.
 
@@ -136,6 +137,43 @@ demo@DESKTOP-6FPE1AE:~$ az acr repository list -n $ACRNAME
 ]
 ````
 
-## Review Microsoft Defender for Containers Assessments
+## Review Microsoft Defender for Containers Recommendations
+
+ In this section, you will learn how to review the security recommendations that Defender for Containers generates for your clusters and containers. These recommendations are based on the continuous assessment of your configurations and the comparison with the initiatives applied to your subscriptions. You will also learn how to investigate and remediate the issues that are identified by Defender for Containers.
+
+1) In the Azure portal, Type in **Container registries** in the search field.
+
+2) From the drop down menu click on  **Container Registries**.
+
+![Screenshot](/images/slide3.png)
+
+3) Click on your **container registry** from the list.
+
+![Screenshot](/images/slide4.png)
+
+4) On the menu to the left hand side click on **Microsoft Defender for Cloud** to view your **recommendations**.
+
+5) Click on the recommendation called **Container registry image should have vulnerability findings resolved (Powered by Qualys)**
+
+![Screenshot](/images/slide5.png)
+
+6) To learn how to fix the vulnerability, you can expand the **Remediation steps** section. This section gives you a general helpful overview of the actions you can take to secure your container image vulnerabilities.
+
+7) To get more details and mitigation steps for a specific vulnerability, select it from the list. Microsoft Defender for cloud will guide you to harden your container image.
+
+Identify a finding from the list and click on it. a side menu should appear and provide you with an overall information about the vulnerability. 
+
+![Screenshot](/images/slide6.png)
+
+8) For more information and steps to fix the specific CVEs in your container image, you can use the Take Action feature of Microsoft Defender for cloud. This feature will show you the data that supports the security recommendation and help you resolve the issue. Select **Take Action** to use this feature.
 
 
+9) Click on the **container image**
+
+![Screenshot](/images/slide7.png)
+
+10) Select or search for a **CVE** from the list.
+
+11) **Review** the detailed recommendations from Microsoft Defender for Cloud.
+
+![Screenshot](/images/slide8.png)
