@@ -105,7 +105,7 @@ Verify that Microsoft defender has triggered a security alert in Microsoft Defen
 
 ![Screenshot](/images/mdc-step-asc-1.png)
 
-6) Review the security assessment by clicking on **View fill details**.
+6) Review the security assessment by clicking on **View full details**.
 
 7) Once you have reviewed the details of the simulated security alert. Put the status of the alert from **Active** to **Resolved**. The security alert will dissapear from the security alert list.
 
