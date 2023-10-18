@@ -67,7 +67,7 @@ az aks update -g "$RESOURCE_GROUP" -n $CLUSTERNAME --enable-oidc-issuer --attach
 Query the AKS cluster for the OICD issuer URL with the following command, which stores the reult in an environment variable.
 
 ````
-export AKS_OIDC_ISSUER="$(az aks show -n myAKSCluster -g $RESOURCE_GROUP  --query "oidcIssuerProfile.issuerUrl" -otsv)"
+export AKS_OIDC_ISSUER="$(az aks show -n $CLUSTERNAME -g $RESOURCE_GROUP  --query "oidcIssuerProfile.issuerUrl" -otsv)"
 ````
 
 
@@ -126,7 +126,7 @@ Create a User Managed Identity. We will give this identity *GET access* to the k
 First, connect to the cluster if not already connected
  
  ````
- az aks get-credentials -n myAKSCluster -g $RESOURCE_GROUP 
+ az aks get-credentials -n $CLUSTERNAME -g $RESOURCE_GROUP 
  ````
 
 ### Create service account
