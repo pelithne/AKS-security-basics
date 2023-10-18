@@ -72,7 +72,7 @@ Lets run a bash shell inside the container named **mdc-test**. The bash shell is
 ````bash
 kubectl exec -it mdc-test -- bash
 ````
-We know what to copy and run the echo binary, which is a program which prints its arguments to the standard output. this is useful for testing the security alert system in Microsoft Defender for Cloud.
+We now whant to copy and run the echo binary, which is a program which prints its arguments to the standard output. this is useful for testing the security alert system in Microsoft Defender for Cloud.
 
 Copy the echo binary to a file named asc_alerttest_662jfi039n in the current working directory.
 
