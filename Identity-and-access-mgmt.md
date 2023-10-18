@@ -91,10 +91,10 @@ Kubernetes provides a distributed platform for containerized applications. You b
 
 ### 3.3.1. Create AKS Cluster
 
-Create an AKS cluster using ````az aks create```` command:
+Create a really small AKS cluster using ````az aks create```` command:
 
 ```bash
-az aks create --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME --node-count 2 --node-vm-size Standard_D2s_v4 --no-ssh-key  --network-plugin azure --network-policy azure
+az aks create --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME --node-count 1 --node-vm-size Standard_D2s_v4 --no-ssh-key  --network-plugin azure --network-policy azure
 ```
 
 #### NOTE: the ````network-plugin```` and ````--network-policy```` settings are needed for a later exercise
