@@ -145,17 +145,17 @@ demo@DESKTOP-6FPE1AE:~$ az acr repository list -n $ACRNAME
 
 2) From the drop down menu click on  **Container Registries**.
 
-![Screenshot](/images/slide3.png)
+![Screenshot](/images/Slide3.PNG)
 
 3) Click on your **container registry** from the list.
 
-![Screenshot](/images/slide4.png)
+![Screenshot](/images/Slide4.PNG)
 
 4) On the menu to the left hand side click on **Microsoft Defender for Cloud** to view your **recommendations**.
 
 5) Click on the recommendation called **Container registry image should have vulnerability findings resolved (Powered by Qualys)**
 
-![Screenshot](/images/slide5.png)
+![Screenshot](/images/Slide5.PNG)
 
 6) To learn how to fix the vulnerability, you can expand the **Remediation steps** section. This section gives you a general helpful overview of the actions you can take to secure your container image vulnerabilities.
 
@@ -163,17 +163,17 @@ demo@DESKTOP-6FPE1AE:~$ az acr repository list -n $ACRNAME
 
 Identify a finding from the list and click on it. a side menu should appear and provide you with an overall information about the vulnerability. 
 
-![Screenshot](/images/slide6.png)
+![Screenshot](/images/Slide6.PNG)
 
 8) For more information and steps to fix the specific CVEs in your container image, you can use the Take Action feature of Microsoft Defender for cloud. This feature will show you the data that supports the security recommendation and help you resolve the issue. Select **Take Action** to use this feature.
 
 
 9) Click on the **container image**
 
-![Screenshot](/images/slide7.png)
+![Screenshot](/images/Slide7.PNG)
 
 10) Select or search for a **CVE** from the list.
 
 11) **Review** the detailed recommendations from Microsoft Defender for Cloud.
 
-![Screenshot](/images/slide8.png)
+![Screenshot](/images/Slide8.PNG)
