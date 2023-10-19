@@ -204,7 +204,7 @@ az role assignment create --assignee $ADMIN_GROUP_ID --role "Azure Kubernetes Se
 To create the user account in the next step, you need to know the domain name of your tenant. Here is how you can get it.
 
 ````bash
-DOMAIN=$(az account show --query 'user.name' -o tsv | sed 's/.*@/@/')
+DOMAIN=$(az ad signed-in-user show --query 'userPrincipalName' -o tsv | sed 's/.*@/@/')
 ````
 
 Create the Admin user called John Doe.
