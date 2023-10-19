@@ -229,13 +229,19 @@ az ad group member add --group AKSAdminGroup --member-id $ADMIN_USER_ID
 
 ### Validate the access to the cluster.
 
-Obtain the AKS credentials. 
+First, delete the kube context once again (because it gets recreated when you run ````az aks get-credentials````)
+
+````bash
+rm -fr ~/.kube
+````
+
+Then obtain the AKS credentials again. 
 
 ````bash
 az aks get-credentials -g  $RESOURCE_GROUP -n $CLUSTERNAME
 ````
 
-List all nodes on the cluster. This will trigger a login procedure after which you should be able to interact with the Kubernetes API. login with the user ***John Doe*** 
+Now, try to list all nodes on the cluster. This will again trigger a login procedure after which you should be able to interact with the Kubernetes API. login with the user ***John Doe*** 
 
 ````bash
 kubectl get nodes
@@ -247,7 +253,6 @@ alibengtsson@DESKTOP-6FPE1AE:~$ kubectl get nodes
 To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code XXXXXXXX to authenticate.
 NAME                                STATUS   ROLES   AGE   VERSION
 aks-nodepool1-18760117-vmss000000   Ready    agent   53m   v1.26.6
-aks-nodepool1-18760117-vmss000001   Ready    agent   53m   v1.26.6
 alibengtsson@DESKTOP-6FPE1AE:~$
 ````
 Create a namespace called test-ns in the AKS cluster. 
