@@ -13,7 +13,7 @@ This section focuses on setting up the base infrastructure, and to secure your K
 
 To make sure you are correctly setup with a working subscription, make sure you can log in to the Azure portal. Go to <https://portal.azure.com> Once logged in, feel free to browse around a little bit to get to know the surroundings!
 
-It might be a good idea to keep a tab with the Azure Portal open during the workshop, to keep track of the Azure resources you create. We will only use CLI based tools during the workshop, but everything will be visible in the portal, and all the resources we create could also be created using the portal.
+It might be a good idea to keep a tab with the Azure Portal open during the workshop, to keep track of the Azure resources you create. We will mostly use CLI based tools during the workshop, but everything will be visible in the portal, and all the resources we create could also be created using the portal.
 
 ## 2.2. Azure Cloud Shell
 
@@ -28,16 +28,17 @@ Start cloud shell by typing the address ````shell.azure.com```` into a web brows
 ## 2.3. Enable Microsoft Defender for Containers
 We will activate Microsoft Defender for Containers now, because it takes some time for the initial activation and configuration to complete. By enabling it early, we can ensure that our containers are protected as soon as possible and avoid any potential security gaps. To enable Microsoft Defender for Containers, we will follow these steps:
 
-1) Open your web browser and navigate to the Azure portal at https://portal.azure.com and enter your login credentials provided.
+1) Navigate to the Azure portal at https://portal.azure.com 
 
-2) Once you have successfully logged in to Azure, Type in **Microsoft Defender for Cloud** in the search field. 
+2) Type in **Microsoft Defender for Cloud** in the search field.
+
 3) From the drop down menu click on  **Microsoft Defender for Cloud**.
 
 ![Screenshot](/images/mdc-step1.png)
 
 4) In the Microsoft Defender for Cloud overview page, Click **Environment settings** in the left hand side menu under the **Management** section.
 
-5) Expand the **Tenant Root Group**.
+5) Expand the **Tenant Root Group** (if you don't see a tenant group, just skip this step).
 
 6) On the far right hand side of the subscription click on the **three dots** to open the context menu.
 
@@ -56,13 +57,25 @@ We will activate Microsoft Defender for Containers now, because it takes some ti
 # 3. Initial Setup
 
 ## 3.1 Environment variables
-For convenience, create a few environment variables to stor values that are frequently reused during the workshop.
+For convenience, create a few environment variables to store values that are frequently reused during the workshop.
 
 ````bash
 RESOURCE_GROUP=security-workshop
 CLUSTERNAME=k8s
 LOCATION=westeurope
 
+````
+
+Whenever you create environment variables, it is a good practice to display the content. As an example:
+
+````
+echo $RESOURCE_GROUP
+````
+
+which should give the following output
+
+````
+security-workshop
 ````
 
 ## 3.2. Create Resource Group
@@ -99,6 +112,8 @@ az aks create --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME --node-coun
 
 #### NOTE: the ````network-plugin```` and ````--network-policy```` settings are needed for a later exercise
 
+#### NOTE 2: You may get a confusing message about docker_bridge_cidr. If so, simply disregard it.
+
 
 The creation time for the cluster should be around 4-5 minutes.
 
@@ -110,7 +125,7 @@ In order to use `kubectl` you need to connect to the Kubernetes cluster, using t
 az aks get-credentials --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME
 ```
 
-To verify that your cluster is up and running you can try a kubectl command, like ````kubectl get nodes```` which  will show you the nodes (virtual machines) that are active in your cluster. If you followed the instructions, you should see two nodes.
+To verify that your cluster is up and running you can try a kubectl command, like ````kubectl get nodes```` which  will show you the nodes (virtual machines) that are active in your cluster. If you followed the instructions, you should see just one node.
 
 ````bash
 kubectl get nodes
@@ -131,7 +146,7 @@ In this section, you will learn how to:
 
 ### Integrate AKS with Microsoft Entra ID
 
-Update the existing AKS cluster to support Microsoft Entra ID integration, and configure a cluster admin group, and disable local admin accounts in AKS, as this will prevent anyone from using the **--admin** switch to get the cluster credentials.
+Update the existing AKS cluster to support Microsoft Entra ID integration, and configure a cluster admin group, and disable local admin accounts in AKS. This will prevent anyone from using the **--admin** switch to get the cluster credentials.
 
 ````bash
 az aks update -g  $RESOURCE_GROUP -n  $CLUSTERNAME --enable-azure-rbac --enable-aad --disable-local-accounts
@@ -152,6 +167,8 @@ Use the following command to check the status of your cluster nodes.
 kubectl get nodes
 ````
 
+This will trigger a sign-in procedure as describe below. The sign in will fail, because you still have not created a user with permissions to connect to AKS. Creating that user is what comes next.
+
 **Sign in with your Microsoft Entra ID credentials and get Azure RBAC permissions to use the Kubernetes API.** This is needed because your cluster has Microsoft Entra ID integration and Azure RBAC enabled.
 
 Example output:
@@ -160,7 +177,9 @@ contoso@DESKTOP-6FPE1AE:~$ kubectl get nodes
 To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code XXXXXXXX to authenticate.
 Error from server (Forbidden): nodes is forbidden: User "demo@XXXXXXXX.onmicrosoft.com" cannot list resource "nodes" in API group "" at the cluster scope: User does not have access to the resource in Azure. Update role assignment to allow access.
 ````
-This error occurs because you have signed in with Azure AD and you do not have the appropriate role assignment in Azure RBAC to access any Kubernetes API objectS. To fix this, you need to create a user with the appropiate role assignment to the Azure Kubernetes Service cluster.
+
+
+As mentioned, this error occurs because you have signed in with Azure AD and you do not have the appropriate role assignment in Azure RBAC to access any Kubernetes API objectS. To fix this, you need to create a user with the appropiate role assignment to the Azure Kubernetes Service cluster.
 
 Lets access the cluster with admin permissions.
 
