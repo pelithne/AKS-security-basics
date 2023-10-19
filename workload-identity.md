@@ -54,7 +54,7 @@ Later in this section you will build an application that you will store in Azure
 
 ## Update AKS cluster with OIDC issuer and container registry attachment
 
-Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer. Enabling OIDC on the cluster means it will be allowed to act as an external identity provider, which we will connect to Entra ID (Azure AD).
+Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer. Enabling OIDC on the cluster means it will be allowed to use Microsoft Entra ID as an external identity provider.
 
 The update will take a couple of minutes, so... Coffee Time?
 
