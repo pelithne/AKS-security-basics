@@ -18,9 +18,9 @@ Make sure you have enabled Microsoft Defender for Container before you follow th
 
 During this activity you will:
 
-* Scan Container image for vulnerabilities.
-* Simulate a Security Alert for Kubernetes workload
-* investigate and remediate Vulnerabilities.
+* Scan container image for vulnerabilities.
+* Simulate a security alert for Kubernetes workload.
+* Investigate and review vulnerabilities.
 
 Import the metasploit vulnerability emulator docker image from Docker Hub to your Azure container registry.
 
