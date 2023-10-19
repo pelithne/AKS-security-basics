@@ -54,7 +54,7 @@ Later in this section you will build an application that you will store in Azure
 
 ## Update AKS cluster with OIDC issuer and container registry attachment
 
-Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer. Enabling OIDC on the cluster means it well be allowed to act as an external identity provider, which we will connect to Entra ID (Azure AD).
+Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer. Enabling OIDC on the cluster means it will be allowed to act as an external identity provider, which we will connect to Entra ID (Azure AD).
 
 The update will take a couple of minutes, so... Coffee Time?
 
@@ -102,6 +102,12 @@ Create a secret in the keyvault. This is the secret that will be used by the fro
  ````
  export KEYVAULT_URL="$(az keyvault show -g $RESOURCE_GROUP  -n $KEYVAULT_NAME --query properties.vaultUri -o tsv)"
  ````
+Check the content of the environment variable. It should look similar to this
+````
+echo $KEYVAULT_URL
+https://globallyuniquekeyvaultname.vault.azure.net/
+````
+
 
  ## Create a managed identity and grant permissions to access the secret
 
@@ -198,7 +204,7 @@ The last command will build a container image inside your container registry, an
 
 ## Deploy the application
 
-We want to create some separation between the frontend and backend, by deploying them into different namespaces. Later we will add more separation by introducing network policies in the cluster to allow/disallow traffic between specific namespaces.
+We want to create some separation between the frontend and backend, by deploying them into different namespaces. To add more separation you can use network policies in the cluster to allow/disallow traffic between specific namespaces.
 
 
 First, create the backend namespace
@@ -263,7 +269,7 @@ EOF
 ````
 
 
-Then create the frontend. In this case we already created the frontend namespace in an earlier step. The container image for the frontend is the on you built in a previous step ````$ACRNAME.azurecr.io/azure-vote:v1````
+Then create the frontend. In this case we already created the frontend namespace in an earlier step. The container image for the frontend is the one you built in a previous step ````$ACRNAME.azurecr.io/azure-vote:v1````
 
 ````
 cat <<EOF | kubectl apply -f -
@@ -331,7 +337,7 @@ If the frontend application can connect to the backend redis store, you have suc
 
 You can further validate (or troubleshoot) by reading the logs of the frontend pod. To do that, you need to find the name of the pod:
 ````
-kubectl get pods ---namespace frontend
+kubectl get pods --namespace frontend
 ````
 This should give a result timilar to this
 ````
@@ -352,3 +358,18 @@ And then a little later:
 ````
 Connected to Redis!
 ````
+
+
+Finally, to view the application you deployed, you first need to find out the public IP address
+
+````
+kubectl get svc --namespace frontend
+````
+
+You should get output similar to this
+````
+NAME               TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)        AGE
+azure-vote-front   LoadBalancer   10.0.72.219   52.157.236.22   80:30187/TCP   3h45m
+````
+
+Now use a browser to navigate the the ````EXTERNAL-IP```` and start voting!
