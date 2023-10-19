@@ -55,7 +55,7 @@ rm index.html
 exit
 ```` 
 
-## Apply network policies
+## Apply "deny" network policy
 
 To restrict pod communication, we can create network policies. 
 
@@ -78,8 +78,9 @@ spec:
 EOF
 ````
 
+````matchLabels: {}```` means the policy will not match any pod label, which means that no pod will be allowed to communicate with any pod in the ````nginx```` namespace.
 
-If you repeat the wget command form inside the busybox pod, you should find that the request now times out
+If you repeat the wget command from inside the busybox pod, you should find that the request now times out
 ````
 kubectl exec -ti busybox --namespace busybox -- sh
 wget http://<nginx IP address>
@@ -94,7 +95,9 @@ Connecting to 10.224.0.25 (10.224.0.25:80)
 
 It times out because we have restricted all communication to the nginx namespace. Use ````ctrl-c```` to break out.
 
-Now apply a new policy that allows traffic into the nginx pod from pods that have the label ````app: busybox```` which are located in the namespace ````busybox``````.
+## Apply "allow" policy
+
+Now apply a new policy that allows traffic into the nginx pod from pods that have the label ````run: busybox```` which are located in the namespace ````busybox````. 
 
 ````
 cat <<EOF | kubectl apply -f -
@@ -118,7 +121,7 @@ spec:
 EOF
 ````
 
-This time traffic should be allowed when you repeat the wget request from the busybox pod.
+This time traffic should be allowed, when you repeat the wget request from the busybox pod.
 
 ````
 kubectl exec -ti busybox -- sh
@@ -132,8 +135,7 @@ index.html           100% |*****************************************************
 ````
 
 
-
-
+## Final validation
 
 As a final validation, create a new busybox pod in another namespace and try to connect to nginx
 
@@ -144,7 +146,6 @@ kubectl run busybox --image=busybox --namespace busybox2 --namespace busybox2 --
 
 ````
 
-## Generate traffic between pods
 
 Now, *exec* into the new ````busybox2```` pod and issue an HTTP GET request towards the nginx IP address
 
