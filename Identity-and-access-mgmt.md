@@ -7,15 +7,15 @@ This section focuses on setting up the base infrastructure, and to secure your K
 * Secure access to the cluster
 
 
-# 2. Prerequisites
+## 1.1 Prerequisites
 
-## 2.1. Azure Portal
+### 1.1.1 Azure Portal
 
 To make sure you are correctly setup with a working subscription, make sure you can log in to the Azure portal. Go to <https://portal.azure.com> Once logged in, feel free to browse around a little bit to get to know the surroundings!
 
 It might be a good idea to keep a tab with the Azure Portal open during the workshop, to keep track of the Azure resources you create. We will mostly use CLI based tools during the workshop, but everything will be visible in the portal, and all the resources we create could also be created using the portal.
 
-## 2.2. Azure Cloud Shell
+### 1.1.2 Azure Cloud Shell
 
 We will use the Azure Cloud Shell throughout the workshop for all our command line needs. This is a web based shell that has all the necessary tools (like kubectl, az cli, helm, etc) pre-installed.
 
@@ -25,7 +25,7 @@ Start cloud shell by typing the address ````shell.azure.com```` into a web brows
 
 **Protip II: Cloud Shell will time out after 20 minutes of inactivity. When you log back in, you will end up in your home directory, so be sure to ````cd```` into where you are supposed to be.**
 
-## 2.3. Enable Microsoft Defender for Containers
+## 1.1.3 Enable Microsoft Defender for Containers
 We will activate Microsoft Defender for Containers now, because it takes some time for the initial activation and configuration to complete. By enabling it early, we can ensure that our containers are protected as soon as possible and avoid any potential security gaps. To enable Microsoft Defender for Containers, we will follow these steps:
 
 1) Navigate to the Azure portal at https://portal.azure.com 
@@ -54,9 +54,9 @@ We will activate Microsoft Defender for Containers now, because it takes some ti
 
 ![Screenshot](/images/mdc-step3.png)
 
-# 3. Initial Setup
+## 1.2 Initial Setup
 
-## 3.1 Environment variables
+### 1.2.1 Environment variables
 For convenience, create a few environment variables to store values that are frequently reused during the workshop.
 
 ````bash
@@ -78,7 +78,7 @@ which should give the following output
 security-workshop
 ````
 
-## 3.2. Create Resource Group
+## 1.2.2 Create Resource Group
 
 In all the commands in this section, we will use the name space name ```` $RESOURCE_GROUP````. If you choose a different name, just make sure to modify the commands accordingly
 
@@ -91,7 +91,7 @@ az group create -n  $RESOURCE_GROUP -l $LOCATION
 ````
 
 
-## 3.3. Azure Kubernetes Service (AKS)
+## 1.2.3 Azure Kubernetes Service (AKS)
 
 AKS is the hosted Kubernetes service on Azure.
 
@@ -102,7 +102,7 @@ Kubernetes provides a distributed platform for containerized applications. You b
 * Update Kubernetes manifest files
 * Run an application in Kubernetes
 
-### 3.3.1. Create AKS Cluster
+### 1.2.4 Create AKS Cluster
 
 Create a really small AKS cluster using ````az aks create```` command:
 
@@ -117,7 +117,7 @@ az aks create --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME --node-coun
 
 The creation time for the cluster should be around 4-5 minutes.
 
-### 3.3.2. Get access to the AKS Cluster
+### 1.2.5. Get access to the AKS Cluster
 
 In order to use `kubectl` you need to connect to the Kubernetes cluster, using the following command:
 
@@ -132,7 +132,7 @@ kubectl get nodes
 ````
 
 
-### Secure cluster access with Microsoft Entra ID (Azure Active Directory)
+### 1.2.6 Secure cluster access with Microsoft Entra ID (Azure Active Directory)
 
 Azure Kubernetes Service (AKS) supports Azure Active Directory (AAD) integration, which allows you to control access to your cluster resources using Azure role-based access control (RBAC). 
 
@@ -144,7 +144,7 @@ In this section, you will learn how to:
 - Create User in AAD
 
 
-### Integrate AKS with Microsoft Entra ID
+### 1.2.7 Integrate AKS with Microsoft Entra ID
 
 Update the existing AKS cluster to support Microsoft Entra ID integration, and configure a cluster admin group, and disable local admin accounts in AKS. This will prevent anyone from using the **--admin** switch to get the cluster credentials.
 
@@ -227,7 +227,7 @@ Assign the user to the admin security group.
 az ad group member add --group AKSAdminGroup --member-id $ADMIN_USER_ID
 ````
 
-### Validate the access to the cluster.
+### 1.2.8 Validate the access to the cluster.
 
 First, delete the kube context once again (because it gets recreated when you run ````az aks get-credentials````)
 
