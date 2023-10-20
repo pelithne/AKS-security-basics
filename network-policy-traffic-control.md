@@ -1,12 +1,12 @@
-# Network Policy Traffic Control 
+# 1 Network Policy Traffic Control 
 
-## Introduction
+## 1.1 Introduction
 
 Your AKS cluster was deployed with Azure network policies enabled. The Network policies can be used to control traffic between resources in Kubernetes.
 
 In this section you will create two workloads in their own namespaces that initially will be allowed to communicate. After that you will restrict communication between pods.
 
-## Create namespaces and workloads
+## 1.2 Create namespaces and workloads
 
 First create a namespace called nginx and an nginx web server
 
@@ -23,7 +23,7 @@ kubectl run busybox --image=busybox --namespace busybox --namespace busybox -- s
 
 ````
 
-## Generate traffic between pods
+## 1.3 Generate traffic between pods
 
 Now, *exec* into the busybox container and issue a HTTP GET request towards its IP address
 
@@ -55,7 +55,7 @@ rm index.html
 exit
 ```` 
 
-## Apply "deny" network policy
+## 1.4 Apply "deny" network policy
 
 To restrict pod communication, we can create network policies. 
 
@@ -95,7 +95,7 @@ Connecting to 10.224.0.25 (10.224.0.25:80)
 
 It times out because we have restricted all communication to the nginx namespace. Use ````ctrl-c```` to break out.
 
-## Apply "allow" policy
+## 1.5 Apply "allow" policy
 
 Now apply a new policy that allows traffic into the nginx pod from pods that have the label ````run: busybox```` which are located in the namespace ````busybox````. 
 
@@ -135,7 +135,7 @@ index.html           100% |*****************************************************
 ````
 
 
-## Final validation
+## 1.6 Final validation
 
 As a final validation, create a new busybox pod in another namespace and try to connect to nginx
 
