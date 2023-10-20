@@ -1,7 +1,7 @@
-# Workload Identity
+# 4 Workload Identity
 
 
-## Introduction
+## 4.1 Introduction
 
 Workload identity allows you to securely access Azure resources from your Kubernetes applications using Azure AD identities. This way, you can avoid storing and managing credentials in your cluster, and instead rely on the native Kubernetes mechanisms to federate with external identity providers.
 
@@ -20,7 +20,7 @@ During this activity you will:
 * Deploy a workload and verify authentication to keyvault with the workload identity
 
 
-## Environment variables
+## 4.2 Environment variables
 
 First, lets create a few environment variables, for ease of use. 
 
@@ -44,7 +44,7 @@ export ACRNAME=<your globally unique container registry name>
 
 
 
-## Create Azure Container Registry (ACR)
+## 4.3 Create Azure Container Registry (ACR)
 
 Later in this section you will build an application that you will store in Azure Container Registry. To create the registry, run this command:
 
@@ -52,7 +52,7 @@ Later in this section you will build an application that you will store in Azure
  az acr create --resource-group $RESOURCE_GROUP --name $ACRNAME --sku Standard
 ````
 
-## Update AKS cluster with OIDC issuer and container registry attachment
+## 4.4 Update AKS cluster with OIDC issuer and container registry attachment
 
 Now, update the AKS cluster to attach it to the newly created container registry. Also register the cluster as OIDC issuer. Enabling OIDC on the cluster means it will be allowed to act as an external identity provider, which we will connect to Entra ID (Azure AD).
 
@@ -63,7 +63,7 @@ az aks update -g "$RESOURCE_GROUP" -n $CLUSTERNAME --enable-oidc-issuer --attach
 
 ````
 
-## Get the OICD issuer URL
+## 4.5 Get the OICD issuer URL
 
 Query the AKS cluster for the OICD issuer URL with the following command, which stores the reult in an environment variable.
 
@@ -82,7 +82,7 @@ The variable should contain the Issuer URL similar to the following:
 
 
 
-## Create keyvault
+## 4.6 Create keyvault
 
 Create a keyvault in the same resource group as the other resources (not neccesary for in to be in the same RG, but for clarity)
 
@@ -90,7 +90,7 @@ Create a keyvault in the same resource group as the other resources (not neccesa
  az keyvault create --resource-group $RESOURCE_GROUP  --location $LOCATION  --name $KEYVAULT_NAME 
  ````
 
-## Add a secret to the vault
+## 4.7 Add a secret to the vault
 
 Create a secret in the keyvault. This is the secret that will be used by the frontend application to connect to the (redis) backend.
 
@@ -98,7 +98,7 @@ Create a secret in the keyvault. This is the secret that will be used by the fro
  az keyvault secret set --vault-name $KEYVAULT_NAME  --name $KEYVAULT_SECRET_NAME  --value 'redispassword'
  ````
 
-## Add the Key Vault URL to the environment variable *KEYVAULT_URL*
+## 4.8 Add the Key Vault URL to the environment variable *KEYVAULT_URL*
  ````
  export KEYVAULT_URL="$(az keyvault show -g $RESOURCE_GROUP  -n $KEYVAULT_NAME --query properties.vaultUri -o tsv)"
  ````
@@ -109,7 +109,7 @@ https://globallyuniquekeyvaultname.vault.azure.net/
 ````
 
 
- ## Create a managed identity and grant permissions to access the secret
+ ## 4.9 Create a managed identity and grant permissions to access the secret
 
 Create a User Managed Identity. We will give this identity *GET access* to the keyvault, and later associate it with a Kubernetes service account. 
 
@@ -128,7 +128,7 @@ Create a User Managed Identity. We will give this identity *GET access* to the k
  ````
 
 
- ## Create Kubernetes service account
+ ## 4.10 Create Kubernetes service account
 
 First, connect to the cluster if not already connected
  
@@ -136,7 +136,7 @@ First, connect to the cluster if not already connected
  az aks get-credentials -n $CLUSTERNAME -g $RESOURCE_GROUP 
  ````
 
-### Create service account
+### 4.11 Create service account
 
 The service account should exist in the frontend namespace, because it's the frontend service that will use that service account to get the credentials to connect to the (redis) backend service.
 
@@ -171,7 +171,7 @@ EOF
 ````
 
 
-## Establish federated identity credential
+## 4.12 Establish federated identity credential
 
 In this step we connect the service account with the user defined managed identity, using a federated credential. 
 
@@ -179,7 +179,7 @@ In this step we connect the service account with the user defined managed identi
 az identity federated-credential create --name $FEDERATED_IDENTITY_CREDENTIAL_NAME --identity-name $USER_ASSIGNED_IDENTITY_NAME --resource-group $RESOURCE_GROUP --issuer $AKS_OIDC_ISSUER --subject system:serviceaccount:$FRONTEND_NAMESPACE:$SERVICE_ACCOUNT_NAME
 ````
 
-## Build the application
+## 4.13 Build the application
 
 Now its time to build the application, which is a simple python frontend. The application uses a redis container as it's "database layer" and connects to Redis using a password. This password is stored as a secret in a keyvault, and the frontend uses the workload identity feature to get access to that secret (the code uses Azure Identity client libraries)
 
