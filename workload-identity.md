@@ -24,7 +24,7 @@ During this activity you will:
 
 First, lets create a few environment variables, for ease of use. 
 
-Pro-tip: Save them into a file, so that you can restore them if cloudshell times out (which it will)
+Pro-tip: Save them into a file, so that you can restore them if cloudshell times out (which it will).
 
 ````
 export RESOURCE_GROUP="security-workshop"
@@ -59,7 +59,7 @@ Now, update the AKS cluster to attach it to the newly created container registry
 The update will take a couple of minutes, so... Coffee Time?
 
 ````
-az aks update -g "$RESOURCE_GROUP" -n $CLUSTERNAME --enable-oidc-issuer --attach-acr $ACRNAME
+az aks update -g "$RESOURCE_GROUP" -n $CLUSTERNAME --enable-oidc-issuer --enable-workload-identity --attach-acr $ACRNAME
 
 ````
 
