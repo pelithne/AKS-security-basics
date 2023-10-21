@@ -118,7 +118,7 @@ Verify that Microsoft defender has triggered a security alert in Microsoft Defen
 kubectl delete pods mdc-test
 ````
 
-## 3.4 Import Vulnerable image to Container Registry
+## 4.4 Import Vulnerable image to Container Registry
 
 ````bash
 az acr import --name $ACRNAME --source docker.io/vulnerables/metasploit-vulnerability-emulator
