@@ -25,6 +25,12 @@ Start cloud shell by typing the address ````shell.azure.com```` into a web brows
 
 **Protip II: Cloud Shell will time out after 20 minutes of inactivity. When you log back in, you will end up in your home directory, so be sure to ````cd```` into where you are supposed to be.**
 
+#### NOTE: If you get the following message when creating Cloud Shell:
+ ````Storage fileshare subscription xxxxxx-xxxx-xxxxxx-xxxx-xxxxxxxx is not registered to Microsoft.CloudShell Namespace. Please follow these instructions "https://aka.ms/RegisterCloudShell" to register. In future, unregistered subscriptions will have restricted access to CloudShell service.````
+
+ You can safely disregard it.
+
+
 ## 1.1.3 Enable Microsoft Defender for Containers
 We will activate Microsoft Defender for Containers now, because it takes some time for the initial activation and configuration to complete. By enabling it early, we can ensure that our containers are protected as soon as possible and avoid any potential security gaps. To enable Microsoft Defender for Containers, we will follow these steps:
 
@@ -95,12 +101,11 @@ az group create -n  $RESOURCE_GROUP -l $LOCATION
 
 AKS is the hosted Kubernetes service on Azure.
 
-Kubernetes provides a distributed platform for containerized applications. You build and deploy your own applications into a Kubernetes cluster, and let the cluster manage the availability and connectivity. In this step a sample application will be deployed into your own Kubernetes cluster. You will learn how to:
+Kubernetes provides a distributed platform for containerized applications. You build and deploy your own applications into a Kubernetes cluster, and let the cluster manage the availability and connectivity. You will learn how to:
 
 * Create an AKS Kubernetes Cluster
-* Connect/validate towards the AKS Cluster
-* Update Kubernetes manifest files
-* Run an application in Kubernetes
+* Connect/validate access and permissions towards the AKS Cluster
+
 
 ### 1.2.4 Create AKS Cluster
 
@@ -112,7 +117,7 @@ az aks create --resource-group  $RESOURCE_GROUP --name  $CLUSTERNAME --node-coun
 
 #### NOTE: the ````network-plugin```` and ````--network-policy```` settings are needed for a later exercise
 
-#### NOTE 2: You may get a confusing message about docker_bridge_cidr. If so, simply disregard it.
+#### NOTE 2: You may get an obscured message about docker_bridge_cidr. If so, simply disregard it.
 
 
 The creation time for the cluster should be around 4-5 minutes.
@@ -181,7 +186,7 @@ Error from server (Forbidden): nodes is forbidden: User "demo@XXXXXXXX.onmicroso
 
 As mentioned, this error occurs because you have signed in with Azure AD and you do not have the appropriate role assignment in Azure RBAC to access any Kubernetes API objectS. To fix this, you need to create a user with the appropiate role assignment to the Azure Kubernetes Service cluster.
 
-Lets access the cluster with admin permissions.
+Lets access the cluster with admin permissions, but first we need to:
 
 Create the security group in Azure AD for **Cluster Admin**
 
@@ -266,3 +271,16 @@ Verify the creation of the namespace.
 ````bash
 kubectl get namespaces
 ````
+
+Create an Nginx Pod and deploy it to namespace test-ns.
+
+````bash
+kubectl run nginx-test-pod --image nginx -n test-ns
+````
+
+Verify the creation of the Nginx pod.
+
+````bash
+kubectl get pods -n test-ns
+````
+As a Cluster admin you have full access to the AKS cluster.
