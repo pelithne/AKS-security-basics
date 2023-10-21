@@ -248,6 +248,20 @@ az aks get-credentials -g  $RESOURCE_GROUP -n $CLUSTERNAME
 
 Now, try to list all nodes on the cluster. This will again trigger a login procedure after which you should be able to interact with the Kubernetes API. login with the user ***John Doe*** 
 
+To list all nodes on the cluster, you need to login as John first. This will allow you to access the Kubernetes API and interact with it, with Johns RBAC permissions. Use the following command to login with the user ***John Doe*** 
+
+First note down the password for user John Doe, as this will be used for authenticating against Microsoft Entra ID.
+
+````bash
+
+````
+Note down the login username which we have conviently stored in environment variable.
+
+````bash
+echo john$DOMAIN
+````
+list nodes to trigger the login procedure.
+
 ````bash
 kubectl get nodes
 ````
