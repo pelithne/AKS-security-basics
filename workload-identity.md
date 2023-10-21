@@ -136,7 +136,7 @@ First, connect to the cluster if not already connected
  az aks get-credentials -n $CLUSTERNAME -g $RESOURCE_GROUP 
  ````
 
-### 3.11 Create service account
+### 3.10.1 Create service account
 
 The service account should exist in the frontend namespace, because it's the frontend service that will use that service account to get the credentials to connect to the (redis) backend service.
 
