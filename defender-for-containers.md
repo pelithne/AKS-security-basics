@@ -1,7 +1,7 @@
-# 3 Defender for Containers
+# 4 Defender for Containers
 
 
-## 3.1 Introduction
+## 4.1 Introduction
 
 Microsoft Defender for Containers is a cloud-native solution that helps you secure your containers and their applications. It protects your Kubernetes clusters from misconfigurations, vulnerabilities, and threats, whether they are running on Azure, AWS, GCP, or on-premises. With Microsoft Defender for Containers, you can:
 
@@ -12,7 +12,7 @@ Microsoft Defender for Containers is a cloud-native solution that helps you secu
 
 Microsoft Defender for Containers is part of Microsoft Defender for Cloud, a comprehensive security solution that covers your cloud workloads and hybrid environments. You can enable it easily from the Azure portal and start improving your container security today. Learn more about Microsoft Defender for Containers from [this article](https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-containers-introduction).
 
-## 3.2 Prerequisites
+## 4.2 Prerequisites
 
 Make sure you have enabled Microsoft Defender for Container before you follow these steps. You can find out how to do this in the [Enable Microsoft Defender for Containers](https://github.com/pelithne/AKS-security-basics/blob/main/Identity-and-access-mgmt.md#23-enable-microsoft-defender-for-containers) section. 
 
@@ -24,7 +24,7 @@ During this activity you will:
 
 Import the metasploit vulnerability emulator docker image from Docker Hub to your Azure container registry.
 
-## 3.3 Generate a Security Alert for Kubernetes Workload
+## 4.3 Generate a Security Alert for Kubernetes Workload
 
 
 Launch a pod that executes a test command, to simulate a security alert in Microsoft Defender for cloud.
@@ -137,7 +137,7 @@ demo@DESKTOP-6FPE1AE:~$ az acr repository list -n $ACRNAME
 ]
 ````
 
-## 3.5 Review Microsoft Defender for Containers Recommendations
+## 4.5 Review Microsoft Defender for Containers Recommendations
 
  In this section, you will learn how to review the security recommendations that Defender for Containers generates for your clusters and containers. These recommendations are based on the continuous assessment of your configurations and the comparison with the initiatives applied to your subscriptions. You will also learn how to investigate and remediate the issues that are identified by Defender for Containers.
 
