@@ -139,7 +139,6 @@ kubectl exec -ti busybox --namespace busybox -- sh
 And once again:
 ````
 wget http://<nginx IP address>
-````
 
 Connecting to 10.224.0.25 (10.224.0.25:80)
 saving to 'index.html'
@@ -175,6 +174,7 @@ And one final wget
 
 ````
 wget http://<nginx IP address>
+
 ````
 
 This request will time out, showing that the network policy does not allow traffic from the ````busybox2```` namespace even though the name of the pod is the same as the pod in namespace ````busybox````.
