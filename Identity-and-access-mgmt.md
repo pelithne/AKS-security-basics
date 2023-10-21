@@ -25,10 +25,10 @@ Start cloud shell by typing the address ````shell.azure.com```` into a web brows
 
 **Protip II: Cloud Shell will time out after 20 minutes of inactivity. When you log back in, you will end up in your home directory, so be sure to ````cd```` into where you are supposed to be.**
 
-#### NOTE: If you get the following message when creating Cloud Shell:
+#### NOTE: If you get the following message when creating Cloud Shell, you can safely disregard it:
  ````Storage fileshare subscription xxxxxx-xxxx-xxxxxx-xxxx-xxxxxxxx is not registered to Microsoft.CloudShell Namespace. Please follow these instructions "https://aka.ms/RegisterCloudShell" to register. In future, unregistered subscriptions will have restricted access to CloudShell service.````
 
- You can safely disregard it.
+ 
 
 
 ## 1.1.3 Enable Microsoft Defender for Containers
