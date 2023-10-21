@@ -246,26 +246,27 @@ Then obtain the AKS credentials again.
 az aks get-credentials -g  $RESOURCE_GROUP -n $CLUSTERNAME
 ````
 
-Now, try to list all nodes on the cluster. This will again trigger a login procedure after which you should be able to interact with the Kubernetes API. login with the user ***John Doe*** 
-
-To list all nodes on the cluster, you need to login as John first. This will allow you to access the Kubernetes API and interact with it, with Johns RBAC permissions. Use the following command to login with the user ***John Doe*** 
-
-First note down the password for user John Doe, as this will be used for authenticating against Microsoft Entra ID.
-
-````bash
-
-````
 Note down the login username which we have conviently stored in environment variable.
 
 ````bash
 echo john$DOMAIN
 ````
-list nodes to trigger the login procedure.
 
-````bash
+Now, try to list all nodes on the cluster. 
+
+
+````
 kubectl get nodes
 ````
-example output:
+
+This will again trigger a login procedure after which you should be able to interact with the Kubernetes API with "johns" RBAC permissions. 
+
+login with the user ***John Doe*** by selecting *Use Another Account* in the browser window. Use the email address for your newly created user, which will be what you ````echoed```` above and should look something like: ````john@somemail.onmicrosoft.com````. 
+
+The password to use is the one you used when creating the user (which, if you didn't change it, was ````Something_secure123````).
+
+
+Upon returning to the bash shell, you should see output similar to this:
 
 ````bash
 alibengtsson@DESKTOP-6FPE1AE:~$ kubectl get nodes
