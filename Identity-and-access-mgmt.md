@@ -289,7 +289,7 @@ kubectl get namespaces
 Create an Nginx Pod and deploy it to namespace test-ns.
 
 ````bash
-kubectl run nginx-test-pod --image nginx -n test-ns
+kubectl run test-pod --image=nginx --namespace test-ns
 ````
 
 Verify the creation of the Nginx pod.
