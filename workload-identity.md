@@ -171,7 +171,7 @@ EOF
 ````
 
 
-## 3.12 Establish federated identity credential
+## 3.11 Establish federated identity credential
 
 In this step we connect the service account with the user defined managed identity, using a federated credential. 
 
@@ -179,7 +179,7 @@ In this step we connect the service account with the user defined managed identi
 az identity federated-credential create --name $FEDERATED_IDENTITY_CREDENTIAL_NAME --identity-name $USER_ASSIGNED_IDENTITY_NAME --resource-group $RESOURCE_GROUP --issuer $AKS_OIDC_ISSUER --subject system:serviceaccount:$FRONTEND_NAMESPACE:$SERVICE_ACCOUNT_NAME
 ````
 
-## 3.13 Build the application
+## 3.12 Build the application
 
 Now its time to build the application, which is a simple python frontend. The application uses a redis container as it's "database layer" and connects to Redis using a password. This password is stored as a secret in a keyvault, and the frontend uses the workload identity feature to get access to that secret (the code uses Azure Identity client libraries)
 
@@ -202,7 +202,7 @@ The last command will build a container image inside your container registry, an
 
 #### NOTE: you do not have to make any changes, but feel free to have a look at the code which can be found in ````main.py```` in the ````azrure-vote/azrure-vote```` folder (sorry! Naming folders is hard :-) ).
 
-## 3.14 Deploy the application
+## 3.13 Deploy the application
 
 We want to create some separation between the frontend and backend, by deploying them into different namespaces. To add more separation you can use network policies in the cluster to allow/disallow traffic between specific namespaces.
 
