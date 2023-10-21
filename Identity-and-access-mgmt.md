@@ -68,7 +68,7 @@ For convenience, create a few environment variables to store values that are fre
 ````bash
 RESOURCE_GROUP=security-workshop
 CLUSTERNAME=k8s
-LOCATION=westeurope
+LOCATION=northeurope
 
 ````
 

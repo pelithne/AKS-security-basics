@@ -67,7 +67,7 @@ The following example output shows part of the result of upgrading to *1.27.3*. 
 ````
 "kubernetesVersion": "1.27.3",
 "linuxProfile": null,
-"location": "westeurope",
+"location": "northeurope",
 "maxAgentPools": 100,
 "name": "k8s",
 "networkProfile": {
@@ -117,7 +117,7 @@ The following example output shows the AKS cluster runs *KubernetesVersion 1.27.
 ````output
  Name    Location       ResourceGroup      KubernetesVersion    CurrentKubernetesVersion    ProvisioningState    Fqdn
 ------  -------------  -----------------  -------------------  --------------------------  -------------------  ----------------------------------------------------------------
-k8s     westeurope     security-workshop  1.27.3               1.27.3                      Succeeded            k8s-security-worksho-16153f-mwrte3d1.hcp.westeurope.azmk8s.io
+k8s     northeurope     security-workshop  1.27.3               1.27.3                      Succeeded            k8s-security-worksho-16153f-mwrte3d1.hcp.northeurope.azmk8s.io
 ````
 
 ## 5.5 Allowed upgrade paths

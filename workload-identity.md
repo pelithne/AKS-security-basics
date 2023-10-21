@@ -29,7 +29,7 @@ Pro-tip: Save them into a file, so that you can restore them if cloudshell times
 ````
 export RESOURCE_GROUP="security-workshop"
 export CLUSTERNAME="k8s"
-export LOCATION="westeurope"
+export LOCATION="northeurope"
 export FRONTEND_NAMESPACE="frontend"
 export BACKEND_NAMESPACE="backend"
 export SERVICE_ACCOUNT_NAME="workload-identity-sa"
