@@ -154,17 +154,8 @@ az acr import --name $ACRNAME --source docker.io/vulnerables/metasploit-vulnerab
 
 ![Screenshot](/images/Slide6.PNG)
 
-8) For more information and steps to fix a specific CVE in your container image, you can use the Take Action feature of Microsoft Defender for cloud. This feature will show you the data that supports the security recommendation and help you resolve the issue. Select **Take Action** to use this feature.
+8) Select or search for a **CVE** from the list.
 
-
-
-
-9) Click on the **container image**
-
-![Screenshot](/images/Slide7.PNG)
-
-10) Select or search for a **CVE** from the list.
-
-11) **Review** the detailed recommendations from Microsoft Defender for Cloud.
+9) **Review** the detailed recommendations from Microsoft Defender for Cloud.
 
 ![Screenshot](/images/Slide8.PNG)
