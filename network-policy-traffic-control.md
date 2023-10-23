@@ -34,6 +34,9 @@ kubectl get pods --namespace nginx -o wide
 
 ````
 kubectl exec -ti busybox --namespace busybox -- sh
+````
+Then send some traffic
+````
 wget http://<nginx IP address>
 ````
 
