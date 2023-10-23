@@ -142,17 +142,21 @@ az acr import --name $ACRNAME --source docker.io/vulnerables/metasploit-vulnerab
 
 4) On the menu to the left hand side click on **Microsoft Defender for Cloud** to view your **recommendations**.
 
-5) Click on the recommendation called **Container registry image should have vulnerability findings resolved (Powered by Qualys)**
+5) Notice that we have a new recommendation called **Container registry image should have vulnerability findings resolved**
+
+
+6) To learn how to fix the vulnerability, click on **view addiitonal recommendations in Defender for cloud**
 
 ![Screenshot](/images/Slide5.PNG)
 
-6) To learn how to fix the vulnerability, you can expand the **Remediation steps** section. This section gives you a general helpful overview of the actions you can take to secure your container image vulnerabilities.
 
 7) To get more details and mitigation steps for a specific vulnerability, select it from the list. Microsoft Defender for cloud will guide you to harden your container image.
 
+![Screenshot](/images/Slide6.PNG)
+
 8) For more information and steps to fix a specific CVE in your container image, you can use the Take Action feature of Microsoft Defender for cloud. This feature will show you the data that supports the security recommendation and help you resolve the issue. Select **Take Action** to use this feature.
 
-![Screenshot](/images/Slide6.PNG)
+
 
 
 9) Click on the **container image**
