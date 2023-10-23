@@ -42,6 +42,10 @@ We will activate Microsoft Defender for Containers now, because it takes some ti
 
 ![Screenshot](/images/mdc-step1.png)
 
+3.1) If you are prompted to upgrade press the Upgrade button.
+
+![Screenshot](/images/defender-upgrade.png)
+
 4) In the Microsoft Defender for Cloud overview page, Click **Environment settings** in the left hand side menu under the **Management** section.
 
 5) Expand the **Tenant Root Group** (if you don't see a tenant group, just skip this step).
