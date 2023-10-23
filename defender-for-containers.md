@@ -154,7 +154,7 @@ az acr import --name $ACRNAME --source docker.io/vulnerables/metasploit-vulnerab
 
 ![Screenshot](/images/Slide6.PNG)
 
-8) Select or search for a **CVE** from the list.
+8) Select or search for a **CVE** under the vulnerabilities from the list.
 
 9) **Review** the detailed recommendations from Microsoft Defender for Cloud.
 
