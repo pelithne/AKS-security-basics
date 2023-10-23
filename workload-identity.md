@@ -36,13 +36,14 @@ export SERVICE_ACCOUNT_NAME="workload-identity-sa"
 export SUBSCRIPTION="$(az account show --query id --output tsv)"
 export USER_ASSIGNED_IDENTITY_NAME="keyvaultreader"
 export FEDERATED_IDENTITY_CREDENTIAL_NAME="keyvaultfederated"
-export KEYVAULT_NAME=<your globally unique key vault name>
 export KEYVAULT_SECRET_NAME="redissecret"
-export ACRNAME=<your globally unique container registry name>
 ````
 
-
-
+Then create environment variables to hold the name of your keyvault and your container registry. These need to be unique, and you could for example use your corporate signum as part of the name.
+````
+export KEYVAULT_NAME=<your globally unique key vault name>
+export ACRNAME=<your globally unique container registry name>
+````
 
 ## 3.3 Create Azure Container Registry (ACR)
 
