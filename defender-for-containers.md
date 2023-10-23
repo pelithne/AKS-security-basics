@@ -32,10 +32,10 @@ Launch a pod that executes a test command, to simulate a security alert in Micro
 Create a blank file with the following command.
 
 ````bash
-touch mdctest.yaml
+code mdctest.yaml
 ````
 
-Fill the file with this Yaml manifest, which will launch a pod named mdc-test with ubuntu version 18.04 as container image.
+In the editor that appears, paste (crtl-v) this YAML manifest, which will launch a pod named mdc-test with ubuntu version 18.04 as container image.
 
 ````bash
 apiVersion: v1
@@ -50,7 +50,9 @@ spec:
           args: ["-c", "while true; do echo sleeping; sleep 9600;done"]
 
 ````
-Apply the configuration in the file mdctest.yaml. this will essentially create a Pod in the namespace default.
+Then ````right-click```` and select *Save and quit*.
+
+Apply the configuration in the file mdctest.yaml. this will create a Pod in the namespace default.
 
 ````bash
 kubectl apply -f mdctest.yaml
