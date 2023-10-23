@@ -172,6 +172,7 @@ kubectl exec -ti busybox --namespace busybox2 -- sh
 ````
 
 And one final wget
+
 ````
 wget http://<nginx IP address>
 ````
