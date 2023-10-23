@@ -193,9 +193,9 @@ git clone https://github.com/pelithne/az-vote-with-workload-identity.git
 Then CD into the directory where the (python) application resides and issue the acr build command
 
 ````
-cd cd az-vote-with-workload-identity
+cd az-vote-with-workload-identity
 cd azure-vote 
-az acr build --image azure-vote:v1 --registry $ACRNAME .
+az acr build --image azure-vote:v1 --registry $ACRNAME .    // don't forget the dot at the end
 
 ````
 
