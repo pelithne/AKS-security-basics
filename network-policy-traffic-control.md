@@ -86,8 +86,11 @@ EOF
 If you repeat the wget command from inside the busybox pod, you should find that the request now times out
 ````
 kubectl exec -ti busybox --namespace busybox -- sh
-wget http://<nginx IP address>
 
+````
+and 
+````
+wget http://<nginx IP address>
 ````
 
 You will see something similar to this
