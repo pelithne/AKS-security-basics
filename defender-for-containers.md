@@ -145,7 +145,7 @@ az acr import --name $ACRNAME --source docker.io/vulnerables/metasploit-vulnerab
 5) Notice that we have a new recommendation called **Container registry image should have vulnerability findings resolved**
 
 
-6) To learn how to fix the vulnerability, click on **view addiitonal recommendations in Defender for cloud**
+6) To learn how to fix the vulnerability, click on **view additonal recommendations in Defender for cloud**
 
 ![Screenshot](/images/Slide5.PNG)
 
