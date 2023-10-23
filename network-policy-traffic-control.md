@@ -20,7 +20,6 @@ Next create a name space called busybox and busybox pod, that we will use to sen
 ````
 kubectl create namespace busybox 
 kubectl run busybox --image=busybox --namespace busybox --namespace busybox -- sleep 3600
-
 ````
 
 ## 2.3 Generate traffic between pods
@@ -47,7 +46,6 @@ Connecting to 10.224.0.25 (10.224.0.25:80)
 saving to 'index.html'
 index.html           100% |******************************************************************************************|   615  0:00:00 ETA
 'index.html' saved
-
 ````
 
 This works because as a default all pods in a Kubernetes cluster can communicate with all other pods in that cluster.
@@ -96,7 +94,6 @@ wget http://<nginx IP address>
 You will see something similar to this
 ````
 Connecting to 10.224.0.25 (10.224.0.25:80)
-
 ````
 
 It times out because we have restricted all communication to the nginx namespace. Use ````ctrl-c```` to break out.
@@ -137,13 +134,17 @@ This time traffic should be allowed, when you repeat the wget request from the b
 
 ````
 kubectl exec -ti busybox --namespace busybox -- sh
+````
+
+And once again:
+````
 wget http://<nginx IP address>
+````
 
 Connecting to 10.224.0.25 (10.224.0.25:80)
 saving to 'index.html'
 index.html           100% |******************************************************************************************|   615  0:00:00 ETA
 'index.html' saved
-
 ````
 
 Exit out of the pod.
@@ -160,7 +161,6 @@ As a final validation, create a new busybox pod in another namespace and try to 
 ````
 kubectl create namespace busybox2 
 kubectl run busybox --image=busybox --namespace busybox2 --namespace busybox2 -- sleep 3600
-
 ````
 
 
@@ -169,6 +169,10 @@ Now, *exec* into the new ````busybox2```` pod and issue an HTTP GET request towa
 
 ````
 kubectl exec -ti busybox --namespace busybox2 -- sh
+````
+
+And one final wget
+````
 wget http://<nginx IP address>
 ````
 
