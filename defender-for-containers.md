@@ -125,19 +125,6 @@ kubectl delete pods mdc-test
 ````bash
 az acr import --name $ACRNAME --source docker.io/vulnerables/metasploit-vulnerability-emulator
 ````
-Verify that the docker image is stored in your container registry.
-
-````bash
-az acr repository list --name $ACRNAME
-````
-
-Example output:
-````bash
-demo@DESKTOP-6FPE1AE:~$ az acr repository list -n $ACRNAME
-[
-  "vulnerables/metasploit-vulnerability-emulator"
-]
-````
 
 ## 4.5 Review Microsoft Defender for Containers Recommendations
 
