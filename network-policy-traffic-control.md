@@ -19,7 +19,7 @@ Next create a name space called busybox and busybox pod, that we will use to sen
 
 ````
 kubectl create namespace busybox 
-kubectl run busybox --image=busybox --namespace busybox --namespace busybox -- sleep 3600
+kubectl run busybox --image=busybox --namespace busybox -- sleep 3600
 ````
 
 ## 2.3 Generate traffic between pods
